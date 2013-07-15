@@ -1,0 +1,2427 @@
+###########################################################
+# This Scipt Create By Bhurcop (yudharondonuwu@gmail.com) #
+###########################################################
+
+#################
+# CONFIGURATION #
+#################
+on 1:Connect: {
+  /set %server_owner
+  /set %server_dev
+  /set %server_password
+  /set %server_name
+  /set %server_ip
+  /set %server_tzone
+  /set %server_crozz -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  /set %server_symbol •
+  /set %server_forum
+  /set %server_ch1
+  /set %server_ch2
+  /set %server_ch3
+  /set %server_ch4
+  /set %server_ch5
+  /set %server_ch6
+  /set %server_bot1
+  /set %server_bot2
+  /set %ming -
+  /auser 10 %server_owner
+  /notify %server_owner
+  /notify %server_dev
+  /auser 10 %server_dev
+  /auser 99 %me
+  /timer 1 1 /msg NICKSERV identify %server_password
+  /timer 1 2 /join %server_ch1
+  /timer 1 10 /msg $me !reload
+  /timer 1 20 /msg %me !notify-on
+  /timer 1 21 /msg %me !reload
+  /writeini -n C:\Server\mIRC\option.txt ID: Line.Gate -
+}
+on 1:Disconnect: {
+  /notify off
+}
+#####################
+# END CONFIGURATION #
+#####################
+
+#######################
+# GENERAL USE COMMAND #
+#######################
+on 1:Join:#: {
+  /msg $nick Welcome To %server_name Battle.Net
+  /msg $nick IP: %server_ip %ming Tzone: %server_tzone
+  /msg $nick Untuk Melihat Command Anda, Type /w $me !help
+}
+on 1:Text:*!help*:?: {
+  ($2 == $null) {
+    /msg $nick %server_symbol Command User %server_name %server_symbol
+    /msg $nick %server_crozz
+    /msg $nick Untuk melihat list crew, type !crew
+    /msg $nick Untuk melihat forum server, type !forum
+    /msg $nick Untuk melihat status userid, type !status
+    /msg $nick Untuk melihat list online crew, type !online
+    /msg $nick Untuk Keluar Dari %server_name : -relog
+    /msg $nick %server_crozz
+  }
+}
+on 1:Text:*!crew*:?: {
+  ($2 == $null) {
+    /msg $nick *** List Crew %server_name ***
+    /msg $me !list-ha $nick
+    /msg $me !list-adm $nick
+    /msg $me !list-aop $nick
+    /msg $me !list-ops $nick
+    /msg $me !list-opc $nick
+    /msg $me !list-te $nick
+    /msg $me !list-cat $nick
+    /msg $me !list-vop $nick
+  }
+}     
+on 1:Text:*!forum*:?: {
+  ($2 == $null) {
+    /msg $nick Official Forum:
+    /msg $nick %server_forum
+  }
+}
+on 1:Text:*!donasi*:?: {
+  ($2 == $null) {
+    /msg $nick Maaf, Untuk Saat Ini Belum Ada Donasi Yang Tersedia!
+    /msg $nick Silahkan Hubungi Owner: %server_owner
+  }
+}
+on 1:Text:*-relog:#: {
+  /amsg ID : $nick Relog Dari %server_name
+  /raw kill $nick
+}
+on 1:TEXT:!status*:?: { 
+  if ( $2 == $null ) { 
+    /notice $nick Type: !status <nickname>
+    /halt
+  } 
+  if ( $readini C:\Server\mIRC\lockunlock.txt ID: $2 == ipunban ) {
+    /notice $nick Maaf, data yg diberikan termasuk data IP Address, silahkan gunakan command untuk melihat Status IP Address.
+    /halt
+  }
+  if ( $readini C:\Server\mIRC\lockunlock.txt ID: $2 == ipban ) {
+    /notice $nick Maaf, data yg diberikan termasuk data IP Address, silahkan gunakan command untuk melihat Status IP Address.
+    /halt
+  }
+  if ( $readini C:\Server\mIRC\lockunlock.txt ID: $2 == ipPERMANENT ) {
+    /notice $nick Maaf, data yg diberikan termasuk data IP Address, silahkan gunakan command untuk melihat Status IP Address.
+    /halt
+  }
+  if ( $readini C:\Server\mIRC\status.txt ID: $2 == $null ) {
+    /notice $nick Nickname: $2 Belum Pernah Di Banned!
+    /halt
+  }
+  elseif ( $2 == $null ) { set %15 $readini C:\Server\mIRC\status.txt ID: $2 }
+  if ( %15 == $null ) {
+    /notice $nick ID: $2 %ming $readini C:\Server\mIRC\status.txt ID: $2 ( $+ $readini C:\Server\mIRC\History.txt ID: $2 $+ / $+ 7)
+    /notice $nick $readini C:\Server\mIRC\info.txt ID: $2
+  }
+}
+on 1:TEXT:!cek-ip*:?: { 
+  if ( $2 == $null ) { 
+    /notice $nick Type: !cek-ip <ipaddress>
+    /halt
+  } 
+  if ( $readini C:\Server\mIRC\lockunlock.txt ID: $2 == unban ) {
+    /notice $nick Maaf, data yg diberikan termasuk data ID, silahkan gunakan command untuk melihat Status ID.
+    /halt
+  }
+  if ( $readini C:\Server\mIRC\lockunlock.txt ID: $2 == ban ) {
+    /notice $nick Maaf, data yg diberikan termasuk data ID, silahkan gunakan command untuk melihat Status ID.
+    /halt
+  }
+  if ( $readini C:\Server\mIRC\lockunlock.txt ID: $2 == PERMANENT ) {
+    /notice $nick Maaf, data yg diberikan termasuk data ID, silahkan gunakan command untuk melihat Status ID.
+    /halt
+  }
+  if ( $readini C:\Server\mIRC\status.txt ID: $2 == $null ) {
+    /notice $nick IP $2 Belum Pernah Di Banned!
+    /halt
+  }
+  elseif ( $2 == $null ) { set %15 $readini C:\Server\mIRC\status.txt ID: $2 }
+  if ( %15 == $null ) {
+    /notice $nick IP: $2 %ming $readini C:\Server\mIRC\status.txt ID: $2 
+    /notice $nick $readini C:\Server\mIRC\info.txt ID: $2 %ming History Banned: ( $+ $readini C:\Server\mIRC\History.txt ID: $2 $+ / $+ 7) Case(s).
+  }
+}
+####################
+# LIST CREW SERVER #
+####################
+on 10:text:*!list-owner*:?: {
+  /msg $2 Owner %server_name : %server_owner
+}
+on 10:text:*!list-dev*:?: {
+  /msg $2 Dev %server_name : %server_dev
+}
+on 10:text:*!list-ha*:?: {
+  /set %hadm1 HeadAdmin:
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i)) {
+      if ($level($notify(%i)) == 9 ) {
+        /inc %j 1
+        if (%a == 0) %hadm1 = %hadm1 $notify(%i)
+        else %hadm1 = %hadm1 %ming $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) /msg $2 %hadm1 
+  else /msg $2 NULL Head Admin.
+}
+on 10:text:*!list-adm*:?: {
+  /set %adm1 Administrator:
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i)) {
+      if ($level($notify(%i)) == 8 ) {
+        /inc %j 1
+        if (%a == 0) %adm1 = %adm1 $notify(%i)
+        else %adm1 = %adm1 %ming $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) /msg $2 %adm1 
+  else /msg $2 NULL Administrator.
+}
+on 10:text:*!list-aop*:?: {
+  /set %aop1 AdminOPerator:
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i)) {
+      if ($level($notify(%i)) == 7 ) {
+        /inc %j 1
+        if (%a == 0) %aop1 = %aop1 $notify(%i)
+        else %aop1 = %aop1 %ming $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) /msg $2 %aop1 
+  else /msg $2 NULL Admin OPerator.
+}
+on 10:text:*!list-ops*:?: {
+  /set %HOP1 OPeratorServer:
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i)) {
+      if ($level($notify(%i)) == 6 ) {
+        /inc %j 1
+        if (%a == 0) %HOP1 = %HOP1 $notify(%i)
+        else %HOP1 = %HOP1 %ming $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) /msg $2 %HOP1 
+  else /msg $2 NULL OPerator Server.
+}
+on 10:text:*!list-opc*:?: {
+  /set %opc1 OPeratorChanel:
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i)) {
+      if ($level($notify(%i)) == 5 ) {
+        /inc %j 1
+        if (%a == 0) %opc1 = %opc1 $notify(%i)
+        else %opc1 = %opc1 %ming $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) /msg $2 %opc1 
+  else /msg $2 NULL OPerator Channel.
+}
+on 10:text:*!list-TE*:?: {
+  /set %M-Track1 TeamEvent:
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i)) {
+      if ($level($notify(%i)) == 4 ) {
+        /inc %j 1
+        if (%a == 0) %M-Track1 = %M-Track1 $notify(%i)
+        else %M-Track1 = %M-Track1 %ming $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) /msg $2 %M-Track1 
+  else /msg $2 NULL Team Event.
+}
+on 10:text:*!list-cat*:?: {
+  /set %cat1 GenxAnalyzer:
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i)) {
+      if ($level($notify(%i)) == 3 ) {
+        /inc %j 1
+        if (%a == 0) %cat1 = %cat1 $notify(%i)
+        else %cat1 = %cat1 %ming $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) /msg $2 %cat1 
+  else /msg $2 NULL Analyzet Team.
+}
+on 10:text:*!list-vop*:?: {
+  /set %vop1 VoiceOPerator:
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i)) {
+      if ($level($notify(%i)) == 2 ) {
+        /inc %j 1
+        if (%a == 0) %vop1 = %vop1 $notify(%i)
+        else %vop1 = %vop1 %ming $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) /msg $2 %vop1 
+  else /msg $2 NULL Voice OPerator.
+}
+
+######################
+# STATUS ONLINE CREW #
+######################
+################
+# WHISPER MODE #
+################
+on 1:Text:*!online*:?: {
+  /msg $me !whois HA
+  /msg $me !whois Admin
+  /msg $me !whois AOP
+  /msg $me !whois OPS
+  /msg $me !whois OPC
+  /msg $me !whois TE
+  /msg $me !whois CAT
+  /msg $me !whois VOP
+  /timer 1 1 /msg $me !ol-ha $nick
+  /timer 1 3 /msg $me !ol-adm $nick
+  /timer 1 5 /msg $me !ol-aop $nick
+  /timer 1 7 /msg $me !ol-ops $nick
+  /timer 1 9 /msg $me !ol-opc $nick
+  /timer 1 11 /msg $me !ol-te $nick
+  /timer 1 13 /msg $me !ol-cat $nick
+  /timer 1 15 /msg $me !ol-vop $nick
+}
+on 10:Text:*!ol-ha*:?: {
+  /msg $me !whois HA
+  /set %haon HA Online Saat Ini :
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i).ison) {
+      if ($level($notify(%i)) == 9 ) {
+        /inc %j 1
+        if (%a == 0) %haon = %haon $notify(%i)
+        else %haon = %haon $+ , $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) /msg $2 %haon $+ .
+  else /msg $2 Saat Ini Tidak Ada Head Admin Yang Online.
+}
+on 10:Text:*!ol-adm*:?: {
+  /msg $me !whois Admin
+  /set %admon HA Online Saat Ini :
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i).ison) {
+      if ($level($notify(%i)) == 8 ) {
+        /inc %j 1
+        if (%a == 0) %admon = %admon $notify(%i)
+        else %admon = %admon $+ , $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) /msg $2 %admon $+ .
+  else /msg $2 Saat Ini Tidak Ada Administrator Yang Online.
+}
+on 10:Text:*!ol-aop*:?: {
+  /msg $me !whois AOP
+  /set %aopon AOP Online Saat Ini :
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i).ison) {
+      if ($level($notify(%i)) == 7 ) {
+        /inc %j 1
+        if (%a == 0) %aopon = %aopon $notify(%i)
+        else %aopon = %aopon $+ , $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) /msg $2 %aopon $+ .
+  else /msg $2 Saat Ini Tidak Ada Admin OPerator Yang Online.
+}
+on 10:Text:*!ol-ops*:?: {
+  /msg $me !whois OPS
+  /set %opson OPS Online Saat Ini :
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i).ison) {
+      if ($level($notify(%i)) == 6 ) {
+        /inc %j 1
+        if (%a == 0) %opson = %opson $notify(%i)
+        else %opson = %opson $+ , $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) /msg $2 %opson $+ .
+  else /msg $2 Saat Ini Tidak Ada OPerator Server Yang Online.
+}
+on 10:Text:*!ol-opc*:?: {
+  /msg $me !whois OPC
+  /set %opcon OPC Online Saat Ini :
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i).ison) {
+      if ($level($notify(%i)) == 5 ) {
+        /inc %j 1
+        if (%a == 0) %opcon = %opcon $notify(%i)
+        else %opcon = %opcon $+ , $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) /msg $2 %opcon $+ .
+  else /msg $2 Saat Ini Tidak Ada OPerator Channel Yang Online.
+}
+on 10:Text:*!ol-te*:?: {
+  /msg $me !whois TE
+  /set %teon TE Online Saat Ini :
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i).ison) {
+      if ($level($notify(%i)) == 4 ) {
+        /inc %j 1
+        if (%a == 0) %teon = %teon $notify(%i)
+        else %teon = %teon $+ , $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) /msg $2 %teon $+ .
+  else /msg $2 Saat Ini Tidak Ada Team Event Yang Online.
+}
+on 10:Text:*!ol-cat*:?: {
+  /msg $me !whois CAT
+  /set %caton CAT Online Saat Ini :
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i).ison) {
+      if ($level($notify(%i)) == 3 ) {
+        /inc %j 1
+        if (%a == 0) %caton = %caton $notify(%i)
+        else %caton = %caton $+ , $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) /msg $2 %caton $+ .
+  else /msg $2 Saat Ini Tidak Ada CheAT analyzer Yang Online.
+}
+on 10:Text:*!ol-vop*:?: {
+  /msg $me !whois VOP
+  /set %vopon VOP Online Saat Ini :
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i).ison) {
+      if ($level($notify(%i)) == 2 ) {
+        /inc %j 1
+        if (%a == 0) %vopon = %vopon $notify(%i)
+        else %vopon = %vopon $+ , $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) /msg $2 %vopon $+ .
+  else /msg $2 Saat Ini Tidak Ada Voice OPerator Yang Online.
+}
+################
+# CHANNEL MODE #
+################
+on 1:Text:*!ch-HA*:?: {
+  /msg $me !whois HA
+  /timer 1 1 /msg $me !ha
+  /timer 1 50 /msg $me !ch-Admin
+}
+on 10:Text:*!ha*:?: {
+  /msg $me !whois HA
+  /set %ha HA Online :
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i).ison) {
+      if ($level($notify(%i)) == 9 ) {
+        /inc %j 1
+        if (%a == 0) %ha = %ha $notify(%i)
+        else %ha = %ha $+ , $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) {
+    /msg %server_ch2 %ha $+ .
+    /msg %server_ch3 %ha $+ .
+    /msg %server_ch4 %ha $+ .
+    /msg %server_ch5 %ha $+ .
+    /msg %server_ch6 %ha $+ .
+    /amsg %ha $+ .
+  }
+  else /amsg Saat Ini Tidak Ada Head Admin Online.
+}
+on 1:Text:*!ch-Admin*:?: {
+  /msg $me !whois Admin
+  /timer 1 1 /msg $me !admin
+  /timer 1 100 /msg $me !ch-AOP
+}
+on 10:Text:*!admin*:?: {
+  /msg $me !whois Admin
+  /set %adm Admin Online :
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i).ison) {
+      if ($level($notify(%i)) == 8 ) {
+        /inc %j 1
+        if (%a == 0) %adm = %adm $notify(%i)
+        else %adm = %adm $+ , $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) {
+    /msg %server_ch2 %adm $+ .
+    /msg %server_ch3 %adm $+ .
+    /msg %server_ch4 %adm $+ .
+    /msg %server_ch5 %adm $+ .
+    /msg %server_ch6 %adm $+ .
+    /amsg %adm $+ .
+  }
+  else /amsg Saat Ini Tidak Ada Admininistrator Online.
+}
+on 1:Text:*!ch-AOP*:?: {
+  /msg $me !whois AOP
+  /timer 1 1 /msg $me !aop
+  /timer 1 150 /msg $me !ch-OPS
+}
+on 10:Text:*!aop*:?: {
+  /msg $me !whois AOP
+  /set %aop AOP Online :
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i).ison) {
+      if ($level($notify(%i)) == 7 ) {
+        /inc %j 1
+        if (%a == 0) %aop = %aop $notify(%i)
+        else %aop = %aop $+ , $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) {
+    /msg %server_ch2 %aop $+ .
+    /msg %server_ch3 %aop $+ .
+    /msg %server_ch4 %aop $+ .
+    /msg %server_ch5 %aop $+ .
+    /msg %server_ch6 %aop $+ .
+    /amsg %aop $+ .
+  }
+  else /amsg Saat Ini Tidak Ada Admin OPerator Online.
+}
+on 1:Text:*!ch-OPS*:?: {
+  /msg $me !whois OPS
+  /timer 1 1 /msg $me !ops
+  /timer 1 200 /msg $me !ch-OPC
+}
+on 10:Text:*!ops*:?: {
+  /msg $me !whois OPS
+  /set %ops OPS Online :
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i).ison) {
+      if ($level($notify(%i)) == 6 ) {
+        /inc %j 1
+        if (%a == 0) %ops = %ops $notify(%i)
+        else %ops = %ops $+ , $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) {
+    /msg %server_ch2 %ops $+ .
+    /msg %server_ch3 %ops $+ .
+    /msg %server_ch4 %ops $+ .
+    /msg %server_ch5 %ops $+ .
+    /msg %server_ch6 %ops $+ .
+    /amsg %ops $+ .
+  }
+  else /amsg Saat Ini Tidak Ada OPerator Server Online.
+}
+on 1:Text:*!ch-OPC*:?: {
+  /msg $me !whois OPC
+  /timer 1 1 /msg $me !opc
+  /timer 1 250 /msg $me !ch-TE
+}
+on 10:Text:*!opc*:?: {
+  /msg $me !whois OPC
+  /set %opc OPC Online :
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i).ison) {
+      if ($level($notify(%i)) == 5 ) {
+        /inc %j 1
+        if (%a == 0) %opc = %opc $notify(%i)
+        else %opc = %opc $+ , $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) {
+    /msg %server_ch2 %opc $+ .
+    /msg %server_ch3 %opc $+ .
+    /msg %server_ch4 %opc $+ .
+    /msg %server_ch5 %opc $+ .
+    /msg %server_ch6 %opc $+ .
+    /amsg %opc $+ .
+  }
+  else /amsg Saat Ini Tidak Ada OPerator Channel Online.
+}
+on 1:Text:*!ch-TE*:?: {
+  /msg $me !whois TE
+  /timer 1 1 /msg $me !te
+  /timer 1 350 /msg $me !ch-CAT
+}
+on 10:Text:*!te*:?: {
+  /msg $me !whois TE
+  /set %te TE Online :
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i).ison) {
+      if ($level($notify(%i)) == 4 ) {
+        /inc %j 1
+        if (%a == 0) %te = %te $notify(%i)
+        else %te = %te $+ , $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) {
+    /msg %server_ch2 %te $+ .
+    /msg %server_ch3 %te $+ .
+    /msg %server_ch4 %te $+ .
+    /msg %server_ch5 %te $+ .
+    /msg %server_ch6 %te $+ .
+    /amsg %te $+ .
+  }
+  else /amsg Saat Ini Tidak Ada Team Event Online.
+}
+on 1:Text:*!ch-CAT*:?: {
+  /msg $me !whois CAT
+  /timer 1 1 /msg $me !cat
+  /timer 1 400 /msg $me !ch-VOP
+}
+on 10:Text:*!te*:?: {
+  /msg $me !whois CAT
+  /set %cat CAT Online :
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i).ison) {
+      if ($level($notify(%i)) == 3 ) {
+        /inc %j 1
+        if (%a == 0) %cat = %cat $notify(%i)
+        else %cat = %cat $+ , $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) {
+    /msg %server_ch2 %cat $+ .
+    /msg %server_ch3 %cat $+ .
+    /msg %server_ch4 %cat $+ .
+    /msg %server_ch5 %cat $+ .
+    /msg %server_ch6 %cat $+ .
+    /amsg %cat $+ .
+  }
+  else /amsg Saat Ini Tidak Ada CheAT analyzer Online.
+}
+on 1:Text:*!ch-VOP*:?: {
+  /msg $me !whois VOP
+  /timer 1 1 /msg $me !vop
+  /timer 1 450 /msg $me !ch-HA
+}
+on 10:Text:*!vop*:?: {
+  /msg $me !whois VOP
+  /set %vop VOP Online :
+  /var %i = 1
+  /var %a = 0
+  /var %j = 0
+  while (%i <= $notify(0)) {
+    if ($notify(%i).ison) {
+      if ($level($notify(%i)) == 3 ) {
+        /inc %j 1
+        if (%a == 0) %vop = %vop $notify(%i)
+        else %vop = %vop $+ , $notify(%i)
+        %a = 1
+      }
+    }
+    /inc %i 1
+  }
+  if (%j >= 1) {
+    /msg %server_ch2 %vop $+ .
+    /msg %server_ch3 %vop $+ .
+    /msg %server_ch4 %vop $+ .
+    /msg %server_ch5 %vop $+ .
+    /msg %server_ch6 %vop $+ .
+    /amsg %vop $+ .
+  }
+  else /amsg Saat Ini Tidak Ada Voice OPerator Online.
+}
+
+###################################
+# OFFICIAL STAFF JOIN THIS SERVER #
+###################################
+on 2:Join:#: {
+  ($2 == $null) {
+    /msg $nick Welcome $nick to Server %server_name
+    /msg $nick General Command : !help
+    /msg $nick !say !ann !war !by1 !lock !plock !unlock !promote !demote
+  }
+}
+on 3:Join:#: {
+  ($2 == $null) {
+    /msg $nick Welcome $nick to Server %server_name
+    /msg $nick General Command : !help
+    /msg $nick !say !ann !war !by1 !lock !plock !unlock !promote !demote
+  }
+}
+on 4:Join:#: {
+  ($2 == $null) {
+    /msg $nick Welcome $nick to Server %server_name
+    /msg $nick General Command : !help
+    /msg $nick !say !ann !war !by1 !lock !plock !unlock !promote !demote
+  }
+}
+on 5:Join:#: {
+  ($2 == $null) {
+    /msg $nick Welcome $nick to Server %server_name
+    /msg $nick General Command : !help
+    /msg $nick !say !ann !war !by1 !lock !plock !unlock !promote !demote
+  }
+}
+on 6:Join:#: {
+  ($2 == $null) {
+    /msg $nick Welcome $nick to Server %server_name
+    /msg $nick General Command : !help
+    /msg $nick !say !ann !war !by1 !lock !plock !unlock !promote !demote
+  }
+}
+on 7:Join:#: {
+  ($2 == $null) {
+    /msg $nick Welcome $nick to Server %server_name
+    /msg $nick General Command : !help
+    /msg $nick !say !ann !war !by1 !lock !plock !unlock !promote !demote
+  }
+}
+on 8:Join:#: {
+  ($2 == $null) {
+    /msg $nick Welcome $nick to Server %server_name
+    /msg $nick General Command : !help
+    /msg $nick !say !ann !war !by1 !lock !plock !unlock !promote !demote
+  }
+}
+on 9:Join:#: {
+  ($2 == $null) {
+    /msg $nick Welcome $nick to Server %server_name
+    /msg $nick General Command : !help
+    /msg $nick !say !ann !war !by1 !lock !plock !unlock !promote !demote
+  }
+}
+on 9:Join:#: {
+  ($2 == $null) {
+    /msg $nick Welcome $nick to Server %server_name
+    /msg $nick Your General Command : !help
+    /msg $nick !say !ann !war !by1 !lock !plock !unlock !promote !demote
+  }
+}
+
+########################
+# GENERAL CREW COMMAND #
+########################
+**************************************
+* Script Announcement For Battle.Net *
+**************************************
+on 2:Text:*!ann*:?: {
+  If ($2 == $null) {
+    /msg $nick Type /w $me !ann (Info)
+      /msg $nick Contoh : !ann Welcome To Server %server_name
+  }
+  Else {
+    /raw ann $2- ( From : $nick )
+    	/raw msg $nick Announcement Telah Di Kirimkan!
+  }
+}
+*******************************************
+* Script Announcement Wars For Battle.Net *
+*******************************************
+on 2:Text:*!wars*:?: {
+  If ($2 == $null) {
+    /msg $nick Type /w $me !wars (Jmlah Pemain) (Hubungi) (Info)
+    	/msg $nick Contoh : !wars 5 %server_owner Need Clan Wars!
+  }
+  Else {
+    /raw ann Need Wars : $2 vs $2 %ming Info : $4- %ming Hubungi : $3 ( From : $nick )
+    	/raw msg $nick Announcement Telah Di Kirimkan!
+  }
+}
+*********************************************
+* Script Announcement By One For Battle.Net *
+*********************************************
+on 2:Text:*!by1*:?: {
+  If ($2 == $null) {
+    /msg $nick Type /w $me !by1 (Hubungi) (Info)
+    	/msg $nick Contoh : !by1 %server_owner PRO GPL!
+  }
+  Else {
+    /raw ann Need By One %ming Info : $4- %ming Hubungi : $3 ( From : $nick )
+    	/raw msg $nick Announcement Telah Di Kirimkan!
+  }
+}
+***************************************
+* Script Lock / Unlock For Battle.Net *
+***************************************
+on 1:Text:*!lock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 2:Text:*!lock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 3:Text:*!lock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 1:Text:*!plock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 2:Text:*!plock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 3:Text:*!plock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 4:Text:*!plock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 5:Text:*!plock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 1:Text:*!unlock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 2:Text:*!unlock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 1:Text:*!ip-lock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 2:Text:*!ip-lock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 3:Text:*!ip-lock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 4:Text:*!ip-lock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 5:Text:*!ip-lock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 6:Text:*!ip-lock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 7:Text:*!ip-lock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 1:Text:*!ip-plock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 2:Text:*!ip-plock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 3:Text:*!ip-plock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 4:Text:*!ip-plock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 5:Text:*!ip-plock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 6:Text:*!ip-plock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 7:Text:*!ip-plock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 1:Text:*!ip-unlock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 2:Text:*!ip-unlock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 3:Text:*!ip-unlock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 4:Text:*!ip-unlock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 5:Text:*!ip-unlock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 6:Text:*!ip-unlock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 7:Text:*!ip-unlock*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 4:TEXT:*!lock*:?: { 
+  if ( $2 == $null ) { 
+    /notice $nick Type: !lock <nickname> <lama> <case> <bukti>
+    /halt
+  }
+  %length = $3
+  if ( %length > 90 ) { /msg $nick Maaf! Jumlah Lama ban harus berbentuk angka dan tidak lebih dari 90 Hari (MAX)
+  /halt }
+  else {
+    if ( $3 == $null ) { 
+      /notice $nick Type: !lock <nickname> <lama> <case> <bukti>
+      /halt
+    }
+    else {
+      if ($3 !isnum) { 
+        /notice $nick Maaf! Perintah Lama Ban harus dalam bentuk Angka.
+        /halt
+      } 
+      else {
+        if ( $4 == $null ) { 
+          /notice $nick Type: !lock <nickname> <lama> <case> <bukti>
+          /halt
+        }
+        else {
+          if ( $5 == $null ) { 
+            /notice $nick Type: !lock <nickname> <lama> <case> <bukti>
+            /halt
+          }
+          else {
+            if ( $readini C:\Server\mIRC\history.txt ID: $2 == 7 ) {
+              /notice $nick Jumlah Ban ID $2 Telah mencapai Jumlah Maximum
+              /halt
+            }
+            else {
+              if ( $readini C:\Server\mIRC\lockunlock.txt ID: $2 == Ban ) {
+                /notice $nick ID: Maaf, $2 telah berstatus banned !
+                /notice $nick ID: $2 %ming $readini C:\Server\mIRC\status.txt ID: $2 
+                /notice $nick $readini C:\Server\mIRC\info.txt ID: $2 %ming History Banned: ( $+ $readini C:\Server\mIRC\History.txt ID: $2 $+ / $+ 7) Case(s).
+                /halt
+              }
+              else {
+                if ( $readini C:\Server\mIRC\blacklist.txt ID: $2 == PERMANENT ) {
+                  /notice $nick Maaf, Nick yang dimaksud sudah berstatus PERMANENTLY Banned !
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\history.txt ID: $2 != 7 ) {
+                  /raw Ann [BANNED INFORMATION] ID $2 %ming Status : Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC\option2.txt ID: $nick - Oleh :  $nick $+ )
+                  1                  /raw lockacct $2
+
+                  /raw kill $2
+                  /msg database !lock $2 $nick $4 $5-
+                  /writeini -n C:\Server\mIRC\lastcommand.txt ID: $nick $1-
+                  /msg #Admin Date: $day $+ , $date(dd/mm/yyyy) - Time: $time((HH:nn)) %ming $readini C:\Server\mIRC\StaffJoin.txt ID: $nick $nick has been Using command: $1-
+                  /writeini -n C:\Server\mIRC\lockunlock.txt ID: $2 Ban
+                  /notice $nick ID $2 telah di ban %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /notice $nick Link Laporan: $5-
+                  %n = $calc( $3 * 86400 )
+                  if ( %n >= 2000000 ) {
+                    %s = $calc( %n / 2 )
+                    /timer 1 %s /timer 1 %s /msg $me !unlock $2 Auto Unban
+                    /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: ID $2 di ban pada tanggal: $date(dd/mm/yyyy) $time((HH:nn)) dan akan di unban pada tanggal: $calcdate($date,$3) $time((HH:nn))
+                    /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: Banned %ming Lama: $3 Hari %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    if ( $readini C:\Server\mIRC\history.txt ID: $2 == $null ) {
+                      /writeini -n C:\Server\mIRC\history.txt ID: $2 1
+                      /writeini -n C:\Server\mIRC\numberhistorylock1.txt ID: $2 1).
+                      /writeini -n C:\Server\mIRC\numberhistoryall1.txt ID: $2 1).
+                      /msg $me !add-banned 1 $2 ID: $2 %ming Status: Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC \option2.txt ID: $nick $nick $+ )
+                      /halt
+                    }
+                    if ( $readini C:\Server\mIRC\history.txt ID: $2 == $null ) {
+                      /writeini -n C:\Server\mIRC\history.txt ID: $2 1
+                      /writeini -n C:\Server\mIRC\numberhistorylock1.txt ID: $2 1).
+                      /writeini -n C:\Server\mIRC\numberhistoryall1.txt ID: $2 1).
+                      /msg $me !add-banned 1 $2 ID: $2 %ming Status: Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC \option2.txt ID: $nick $nick $+ )
+                      /halt
+                    }
+                    elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 1 ) {
+                      /writeini -n C:\Server\mIRC\history.txt ID: $2 2
+                      /writeini -n C:\Server\mIRC\numberhistorylock2.txt ID: $2 2).
+                      /writeini -n C:\Server\mIRC\numberhistoryall3.txt ID: $2 3).
+                      /msg $me !add-banned 2 $2 ID: $2 %ming Status: Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC \option2.txt ID: $nick $nick $+ )
+                      /halt
+                    }
+                    elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 2 ) {
+                      /writeini -n C:\Server\mIRC\history.txt ID: $2 3
+                      /writeini -n C:\Server\mIRC\numberhistorylock3.txt ID: $2 3).
+                      /writeini -n C:\Server\mIRC\numberhistoryall5.txt ID: $2 5).
+                      /msg $me !add-banned 3 $2 ID: $2 %ming Status: Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC \option2.txt ID: $nick $nick $+ )
+                      /halt
+                    }
+                    elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 3 ) {
+                      /writeini -n C:\Server\mIRC\history.txt ID: $2 4
+                      /writeini -n C:\Server\mIRC\numberhistorylock4.txt ID: $2 4).
+                      /writeini -n C:\Server\mIRC\numberhistoryall7.txt ID: $2 7).
+                      /msg $me !add-banned 4 $2 ID: $2 %ming Status: Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC \option2.txt ID: $nick $nick $+ )
+                      /halt
+                    }
+                    elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 4 ) {
+                      /writeini -n C:\Server\mIRC\history.txt ID: $2 5
+                      /writeini -n C:\Server\mIRC\numberhistorylock5.txt ID: $2 5).
+                      /writeini -n C:\Server\mIRC\numberhistoryall9.txt ID: $2 9).
+                      /msg $me !add-banned 5 $2 ID: $2 %ming Status: Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC \option2.txt ID: $nick $nick $+ )
+                      /halt
+                    }
+                    elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 5 ) {
+                      /writeini -n C:\Server\mIRC\history.txt ID: $2 6
+                      /writeini -n C:\Server\mIRC\numberhistorylock6.txt ID: $2 6).
+                      /writeini -n C:\Server\mIRC\numberhistoryall11.txt ID: $2 11).
+                      /msg $me !add-banned 6 $2 ID: $2 %ming Status: Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC \option2.txt ID: $nick $nick $+ )
+                      /halt
+                    }
+                    elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 6 ) {
+                      /writeini -n C:\Server\mIRC\history.txt ID: $2 7
+                      /writeini -n C:\Server\mIRC\numberhistorylock7.txt ID: $2 7).
+                      /writeini -n C:\Server\mIRC\numberhistoryall13.txt ID: $2 13).
+                      /msg $me !add-banned 7 $2 ID: $2 %ming Status: Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC \option2.txt ID: $nick $nick $+ )
+                      /writeini -n C:\Server\mIRC\status.txt ID: $2 %ming Status: BlackList %ming Lama: PERMANENT %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: Bad History (Oleh Robot: Valkyrie)
+                      /writeini -n C:\Server\mIRC\historylist8.txt ID: $2 . Auto BlackList by Robot: $me $+ 
+                      /writeini -n C:\Server\mIRC\numberhistoryall14.txt ID: $2 14).
+                      /writeini -n C:\Server\mIRC\numberhistorylock8.txt ID: $2 .
+                      /raw Ann ID $2 telah diBlackList %ming Lama: Permanent %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: Bad History (Oleh Robot: $me $+ )
+                      /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: ID Berstatus PERMANENTLY Banned tidak akan di Unban!
+                      /halt
+                    }
+                  }
+                  elseif ( %n < 2000000 ) {
+                    /timer 1 %n /msg $me !unlock $2 Auto Unbanned
+                    /writeini -n C:\Server\mIRC\lastcommand.txt ID: $nick $1-
+                    /msg #Admin Date: $day $+ , $date(dd/mm/yyyy) - Time: $time((HH:nn)) %ming $readini C:\Server\mIRC\StaffJoin.txt ID: $nick $nick has been Using command: $1-
+                    /writeini -n C:\Server\mIRC\lockunlock.txt ID: $2 Ban
+                    /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: ID $2 di ban pada tanggal: $date(dd/mm/yyyy) $time((HH:nn)) dan akan di unban pada tanggal: $calcdate($date,$3) $time((HH:nn))
+                    /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: Banned %ming Lama: $3 Hari %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    if ( $readini C:\Server\mIRC\history.txt ID: $2 == $null ) {
+                      /writeini -n C:\Server\mIRC\history.txt ID: $2 1
+                      /writeini -n C:\Server\mIRC\numberhistorylock1.txt ID: $2 1).
+                      /writeini -n C:\Server\mIRC\numberhistoryall1.txt ID: $2 1).
+                      /msg $me !add-banned 1 $2 ID: $2 %ming Status: Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC \option2.txt ID: $nick $nick $+ )
+                      /halt
+                    }
+                    if ( $readini C:\Server\mIRC\history.txt ID: $2 == $null ) {
+                      /writeini -n C:\Server\mIRC\history.txt ID: $2 1
+                      /writeini -n C:\Server\mIRC\numberhistorylock1.txt ID: $2 1).
+                      /writeini -n C:\Server\mIRC\numberhistoryall1.txt ID: $2 1).
+                      /msg $me !add-banned 1 $2 ID: $2 %ming Status: Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC \option2.txt ID: $nick $nick $+ )
+                      /halt
+                    }
+                    elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 1 ) {
+                      /writeini -n C:\Server\mIRC\history.txt ID: $2 2
+                      /writeini -n C:\Server\mIRC\numberhistorylock2.txt ID: $2 2).
+                      /writeini -n C:\Server\mIRC\numberhistoryall3.txt ID: $2 3).
+                      /msg $me !add-banned 2 $2 ID: $2 %ming Status: Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC \option2.txt ID: $nick $nick $+ )
+                      /halt
+                    }
+                    elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 2 ) {
+                      /writeini -n C:\Server\mIRC\history.txt ID: $2 3
+                      /writeini -n C:\Server\mIRC\numberhistorylock3.txt ID: $2 3).
+                      /writeini -n C:\Server\mIRC\numberhistoryall5.txt ID: $2 5).
+                      /msg $me !add-banned 3 $2 ID: $2 %ming Status: Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC \option2.txt ID: $nick $nick $+ )
+                      /halt
+                    }
+                    elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 3 ) {
+                      /writeini -n C:\Server\mIRC\history.txt ID: $2 4
+                      /writeini -n C:\Server\mIRC\numberhistorylock4.txt ID: $2 4).
+                      /writeini -n C:\Server\mIRC\numberhistoryall7.txt ID: $2 7).
+                      /msg $me !add-banned 4 $2 ID: $2 %ming Status: Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC \option2.txt ID: $nick $nick $+ )
+                      /halt
+                    }
+                    elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 4 ) {
+                      /writeini -n C:\Server\mIRC\history.txt ID: $2 5
+                      /writeini -n C:\Server\mIRC\numberhistorylock5.txt ID: $2 5).
+                      /writeini -n C:\Server\mIRC\numberhistoryall9.txt ID: $2 9).
+                      /msg $me !add-banned 5 $2 ID: $2 %ming Status: Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC \option2.txt ID: $nick $nick $+ )
+                      /halt
+                    }
+                    elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 5 ) {
+                      /writeini -n C:\Server\mIRC\history.txt ID: $2 6
+                      /writeini -n C:\Server\mIRC\numberhistorylock6.txt ID: $2 6).
+                      /writeini -n C:\Server\mIRC\numberhistoryall11.txt ID: $2 11).
+                      /msg $me !add-banned 6 $2 ID: $2 %ming Status: Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC \option2.txt ID: $nick $nick $+ )
+                      /halt
+                    }
+                    elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 6 ) {
+                      /writeini -n C:\Server\mIRC\history.txt ID: $2 7
+                      /writeini -n C:\Server\mIRC\numberhistorylock7.txt ID: $2 7).
+                      /writeini -n C:\Server\mIRC\numberhistoryall13.txt ID: $2 13).
+                      /msg $me !add-banned 7 $2 ID: $2 %ming Status: Banned %ming Lama: $3 Hari %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Case: $4 %ming Link Laporan: $5- $readini C:\Server\mIRC \option2.txt ID: $nick $nick $+ )
+                      /writeini -n C:\Server\mIRC\status.txt ID: $2 %ming Status: BlackList %ming Lama: PERMANENT %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: Bad History (Oleh Robot: $me $+ )
+                      /writeini -n C:\Server\mIRC\historylist8.txt ID: $2 . Auto BlackList by Robot: $me $+ 
+                      /writeini -n C:\Server\mIRC\numberhistoryall14.txt ID: $2 14).
+                      /writeini -n C:\Server\mIRC\numberhistorylock8.txt ID: $2 .
+                      /raw Ann ID $2 telah diBlackList %ming Lama: Permanent %ming %ming Tanggal & Jam: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: Bad History (Oleh Robot: $me $+ )
+                    /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: ID Berstatus PERMANENTLY Banned tidak akan di Unban! }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+#################################
+# Command Permanent Banned User #
+#################################
+on 4:TEXT:!plock*:?: { 
+  if ( $2 == $null ) { 
+    /notice $nick Type: !plocl <nickname> <alasan>
+    /halt
+  }
+  else {
+    if ( $3 == $null ) { 
+      /notice $nick Type: !plocl <nickname> <alasan>
+      /halt
+    }
+    else {
+      if ( $readini C:\Server\mIRC\history.txt ID: $2 == 7 ) {
+        /notice $nick Jumlah Banned ID $2 Telah mencapai Jumlah Maximum
+        /halt
+      }
+      else {
+        if ( $readini C:\Server\mIRC\lockunlock.txt ID: $2 == ban ) {
+          /notice $nick Maaf, ID $2 sudah berstatus Banned, Unlock lah terlebih dahulu.
+          /halt
+        }
+        else {
+          if ( $readini C:\Server\mIRC\blacklist.txt ID: $2 == PERMANENT ) {
+            /notice $nick Maaf, Nick yang dimaksud sudah berstatus PERMANENTLY Banned !
+            /halt
+          }
+          elseif ( $readini C:\Server\mIRC\history.txt ID: $2 != 7 ) {
+            /raw Ann [BANNED INFORMATION] ID $2 %ming Status : Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- - ( Oleh : $nick ) 
+            /msg Database !plock $2 $nick $3-
+            /raw lockacct $2
+            /raw kill $2
+            /writeini -n C:\Server\mIRC\lastcommand.txt ID: $nick $1-
+            /msg #Admin Date: $day $+ , $date(dd/mm/yyyy) - Time: $time((HH:nn)) %ming $readini C:\Server\mIRC\StaffJoin.txt ID: $nick $nick has been Using command: $1-
+            /notice $nick ID $2 telah di banned PERMANENT %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+            %n = $calc( $3 * 10 )
+            if ( %n >= 2000000 ) {
+              %s = $calc( %n / 2 )
+              /timer 1 %s /timer 1 %s /msg $me Permanent Banned tidak akan di Unban
+              /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID:  $nick $nick $+ )
+              /writeini -n C:\Server\mIRC\blacklist.txt ID: $2 PERMANENT
+              /writeini -n C:\Server\mIRC\lockunlock.txt ID: $2 ban
+              /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: ID Berstatus PERMANENTLY Banned tidak akan di Unban!
+              if ( $readini C:\Server\mIRC\history.txt ID: $2 == $null ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 1
+                /writeini -n C:\Server\mIRC\numberhistorylock1.txt ID: $2 1).
+                /writeini -n C:\Server\mIRC\numberhistoryall1.txt ID: $2 1).
+                /msg $me !add-banned 1 $2 ID $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              if ( $readini C:\Server\mIRC\history.txt ID: $2 == $null ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 1
+                /writeini -n C:\Server\mIRC\numberhistorylock1.txt ID: $2 1).
+                /writeini -n C:\Server\mIRC\numberhistoryall1.txt ID: $2 1).
+                /msg $me !add-banned 1 $2 ID $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 1 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 2
+                /writeini -n C:\Server\mIRC\numberhistorylock2.txt ID: $2 2).
+                /writeini -n C:\Server\mIRC\numberhistoryall3.txt ID: $2 3).
+                /msg $me !add-banned 2 $2 ID $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 2 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 3
+                /writeini -n C:\Server\mIRC\numberhistorylock3.txt ID: $2 3).
+                /writeini -n C:\Server\mIRC\numberhistoryall5.txt ID: $2 5).
+                /msg $me !add-banned 3 $2 ID $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 3 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 4
+                /writeini -n C:\Server\mIRC\numberhistorylock4.txt ID: $2 4).
+                /writeini -n C:\Server\mIRC\numberhistoryall7.txt ID: $2 7).
+                /msg $me !add-banned 4 $2 ID $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 4 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 5
+                /writeini -n C:\Server\mIRC\numberhistorylock5.txt ID: $2 5).
+                /writeini -n C:\Server\mIRC\numberhistoryall9.txt ID: $2 9).
+                /msg $me !add-banned 5 $2 ID $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 5 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 6
+                /writeini -n C:\Server\mIRC\numberhistorylock6.txt ID: $2 6).
+                /writeini -n C:\Server\mIRC\numberhistoryall11.txt ID: $2 11).
+                /msg $me !add-banned 6 $2 ID $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 6 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 7
+                /writeini -n C:\Server\mIRC\numberhistorylock7.txt ID: $2 7).
+                /writeini -n C:\Server\mIRC\numberhistoryall13.txt ID: $2 13).
+                /msg $me !add-banned 7 $2 ID $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /writeini -n C:\Server\mIRC\historylist8.txt ID: $2 . Auto BlackList by Robot: $me $+ 
+                /writeini -n C:\Server\mIRC\numberhistoryall14.txt ID: $2 14).
+                /writeini -n C:\Server\mIRC\numberhistorylock8.txt ID: $2 .
+                /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: BlackList %ming Lama: PERMANENT %ming Keterangan: Bad History (7/7) %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) (Oleh Robot: $me $+ )
+                /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: ID Berstatus PERMANENTLY Banned tidak akan di Unban!
+                /halt
+              }
+            }
+            elseif ( %n < 2000000 ) {
+              /timer 1 %n /msg $me Permanent Banned tidak akan di Unban
+              /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID:  $nick $nick $+ )
+              /writeini -n C:\Server\mIRC\blacklist.txt ID: $2 PERMANENT
+              /writeini -n C:\Server\mIRC\lockunlock.txt ID: $2 ban
+              /msg #Admin Date: $day $+ , $date(dd/mm/yyyy) - Time: $time((HH:nn)) %ming $readini C:\Server\mIRC\StaffJoin.txt ID: $nick $nick has been Using command: $1-
+              /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: ID Berstatus PERMANENTLY Banned tidak akan di Unban!
+              if ( $readini C:\Server\mIRC\history.txt ID: $2 == $null ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 1
+                /writeini -n C:\Server\mIRC\numberhistorylock1.txt ID: $2 1).
+                /writeini -n C:\Server\mIRC\numberhistoryall1.txt ID: $2 1).
+                /msg $me !add-banned 1 $2 ID $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              if ( $readini C:\Server\mIRC\history.txt ID: $2 == $null ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 1
+                /writeini -n C:\Server\mIRC\numberhistorylock1.txt ID: $2 1).
+                /writeini -n C:\Server\mIRC\numberhistoryall1.txt ID: $2 1).
+                /msg $me !add-banned 1 $2 ID $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 1 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 2
+                /writeini -n C:\Server\mIRC\numberhistorylock2.txt ID: $2 2).
+                /writeini -n C:\Server\mIRC\numberhistoryall3.txt ID: $2 3).
+                /msg $me !add-banned 2 $2 ID $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 2 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 3
+                /writeini -n C:\Server\mIRC\numberhistorylock3.txt ID: $2 3).
+                /writeini -n C:\Server\mIRC\numberhistoryall5.txt ID: $2 5).
+                /msg $me !add-banned 3 $2 ID $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 3 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 4
+                /writeini -n C:\Server\mIRC\numberhistorylock4.txt ID: $2 4).
+                /writeini -n C:\Server\mIRC\numberhistoryall7.txt ID: $2 7).
+                /msg $me !add-banned 4 $2 ID $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 4 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 5
+                /writeini -n C:\Server\mIRC\numberhistorylock5.txt ID: $2 5).
+                /writeini -n C:\Server\mIRC\numberhistoryall9.txt ID: $2 9).
+                /msg $me !add-banned 5 $2 ID $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 5 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 6
+                /writeini -n C:\Server\mIRC\numberhistorylock6.txt ID: $2 6).
+                /writeini -n C:\Server\mIRC\numberhistoryall11.txt ID: $2 11).
+                /msg $me !add-banned 6 $2 ID $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 6 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 7
+                /writeini -n C:\Server\mIRC\numberhistorylock7.txt ID: $2 7).
+                /writeini -n C:\Server\mIRC\numberhistoryall13.txt ID: $2 13).
+                /msg $me !add-banned 7 $2 ID $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /writeini -n C:\Server\mIRC\historylist8.txt ID: $2 . Auto BlackList by Robot: $me $+ 
+                /writeini -n C:\Server\mIRC\numberhistoryall14.txt ID: $2 14).
+                /writeini -n C:\Server\mIRC\numberhistorylock8.txt ID: $2 .
+                /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: BlackList %ming Lama: PERMANENT %ming Keterangan: Bad History (7/7) %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) (Oleh Robot: $me $+ )
+                /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: ID Berstatus PERMANENTLY Banned tidak akan di Unban! 
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+#############################
+# Command Banned IP #
+#############################
+on 8:TEXT:!ip-lock*:?: { 
+  if ( $2 == $null ) { 
+    /notice $nick Type: !ip-lock <ip> <lama> <alasan>
+    /halt
+  }
+  else {
+    if ( $3 == $null ) { 
+      /notice $nick Type: !ip-lock <ip> <lama> <alasan>
+      /halt
+    }
+    else {
+      if ($3 !isnum) { 
+        /notice $nick Maaf! Perintah Lama Banned harus dalam bentuk Angka.
+        /halt
+      } 
+      else {
+        if ( $4 == $null ) { 
+          /notice $nick Type: !ip-lock <ip> <lama> <alasan> 
+          /halt
+        }
+        else {
+          if ( $readini C:\Server\mIRC\history.txt ID: $2 == 7 ) {
+            /notice $nick Jumlah Banned IP $2 Telah mencapai Jumlah Maximum
+            /halt
+          }
+          else {
+            if ( $readini C:\Server\mIRC\lockunlock.txt ID: $2 == IPBan ) {
+              /notice $nick IP: Maaf, IP: $2 telah berstatus Banned !
+              /notice $nick IP: $2 - $readini C:\Server\mIRC\status.txt ID: $2 
+              /notice $nick $readini C:\Server\mIRC\info.txt ID: $2 %ming History Banned: ( $+ $readini C:\Server\mIRC\History.txt ID: $2 $+ / $+ 7) Case(s).
+              /halt
+            }
+            else {
+              if ( $readini C:\Server\mIRC\blacklist.txt ID: $2 == IPPERMANENT ) {
+                /notice $nick Maaf, IP Address yang dimaksud sudah berstatus PERMANENTLY Banned !
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 != 7 ) {
+                /raw ipban add $2
+                /writeini -n C:\Server\mIRC\lastcommand.txt ID: $nick $1-
+                /msg #Admin Date: $day $+ , $date(dd/mm/yyyy) - Time: $time((HH:nn)) %ming $readini C:\Server\mIRC\StaffJoin.txt ID: $nick $nick has been Using command: $1-
+                /writeini -n C:\Server\mIRC\lockunlock.txt ID: $2 IPBan
+                /notice $nick IP $2 telah di banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                %n = $calc( $3 * 86400 )
+                if ( %n >= 2000000 ) {
+                  %s = $calc( %n / 2 )
+                  /timer 1 %s /timer 1 %s /msg $me !ip-unlock $2 Auto Unbanned
+                  /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: IP $2 akan di Unbanned pada Tanggal: $calcdate($date,$3) $time((HH:nn))
+                  /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: Banned %ming Lama: $3 Hari %ming Tanggal: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  if ( $readini C:\Server\mIRC\history.txt ID: $2 == $null ) {
+                    /writeini -n C:\Server\mIRC\history.txt ID: $2 1
+                    /writeini -n C:\Server\mIRC\numberhistorylock1.txt ID: $2 1).
+                    /writeini -n C:\Server\mIRC\numberhistoryall1.txt ID: $2 1).
+                    /msg $me !add-banned 1 $2 IP $2 - Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    /halt
+                  }
+                  if ( $readini C:\Server\mIRC\history.txt ID: $2 == $null ) {
+                    /writeini -n C:\Server\mIRC\history.txt ID: $2 1
+                    /writeini -n C:\Server\mIRC\numberhistorylock1.txt ID: $2 1).
+                    /writeini -n C:\Server\mIRC\numberhistoryall1.txt ID: $2 1).
+                    /msg $me !add-banned 1 $2 IP $2 - Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    /halt
+                  }
+                  elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 1 ) {
+                    /writeini -n C:\Server\mIRC\history.txt ID: $2 2
+                    /writeini -n C:\Server\mIRC\numberhistorylock2.txt ID: $2 2).
+                    /writeini -n C:\Server\mIRC\numberhistoryall3.txt ID: $2 3).
+                    /msg $me !add-banned 2 $2 IP $2 - Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    /halt
+                  }
+                  elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 2 ) {
+                    /writeini -n C:\Server\mIRC\history.txt ID: $2 3
+                    /writeini -n C:\Server\mIRC\numberhistorylock3.txt ID: $2 3).
+                    /writeini -n C:\Server\mIRC\numberhistoryall5.txt ID: $2 5).
+                    /msg $me !add-banned 3 $2 IP $2 - Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    /halt
+                  }
+                  elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 3 ) {
+                    /writeini -n C:\Server\mIRC\history.txt ID: $2 4
+                    /writeini -n C:\Server\mIRC\numberhistorylock4.txt ID: $2 4).
+                    /writeini -n C:\Server\mIRC\numberhistoryall7.txt ID: $2 7).
+                    /msg $me !add-banned 4 $2 IP $2 - Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    /halt
+                  }
+                  elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 4 ) {
+                    /writeini -n C:\Server\mIRC\history.txt ID: $2 5
+                    /writeini -n C:\Server\mIRC\numberhistorylock5.txt ID: $2 5).
+                    /writeini -n C:\Server\mIRC\numberhistoryall9.txt ID: $2 9).
+                    /msg $me !add-banned 5 $2 IP $2 - Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    /halt
+                  }
+                  elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 5 ) {
+                    /writeini -n C:\Server\mIRC\history.txt ID: $2 6
+                    /writeini -n C:\Server\mIRC\numberhistorylock6.txt ID: $2 6).
+                    /writeini -n C:\Server\mIRC\numberhistoryall11.txt ID: $2 11).
+                    /msg $me !add-banned 6 $2 IP $2 - Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    /halt
+                  }
+                  elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 6 ) {
+                    /writeini -n C:\Server\mIRC\history.txt ID: $2 7
+                    /writeini -n C:\Server\mIRC\numberhistorylock7.txt ID: $2 7).
+                    /writeini -n C:\Server\mIRC\numberhistoryall13.txt ID: $2 13).
+                    /msg $me !add-banned 7 $2 IP $2 - Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: BlackList %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: Bad History (7/7) (Oleh Robot: $me $+ )
+                    /writeini -n C:\Server\mIRC\historylist8.txt ID: $2 . Auto BlackList by Robot: $me $+ 
+                    /writeini -n C:\Server\mIRC\numberhistoryall14.txt ID: $2 14).
+                    /writeini -n C:\Server\mIRC\numberhistorylock8.txt ID: $2 .
+                    /raw Ann IP $2 telah diBlackList %ming Lama: Permanent %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: Bad History (7/7) (Oleh Robot: $me $+ )
+                    /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: IP Address Berstatus PERMANENTLY Banned tidak akan di Unban!
+                    /halt
+                  }
+                }
+                elseif ( %n < 2000000 ) {
+                  /timer 1 %n /msg $me !ip-unlock $2 Auto Unbanned
+                  /writeini -n C:\Server\mIRC\lastcommand.txt ID: $nick $1-
+                  /msg #Admin Date: $day $+ , $date(dd/mm/yyyy) - Time: $time((HH:nn)) %ming $readini C:\Server\mIRC\StaffJoin.txt ID: $nick $nick has been Using command: $1-
+                  /writeini -n C:\Server\mIRC\lockunlock.txt ID: $2 IPBan
+                  /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: IP $2 akan di Unbanned pada Tanggal: $calcdate($date,$3) $time((HH:nn))
+                  /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick  $nick $+ )
+                  if ( $readini C:\Server\mIRC\history.txt ID: $2 == $null ) {
+                    /writeini -n C:\Server\mIRC\history.txt ID: $2 1
+                    /writeini -n C:\Server\mIRC\numberhistorylock1.txt ID: $2 1).
+                    /writeini -n C:\Server\mIRC\numberhistoryall1.txt ID: $2 1).
+                    /msg $me !add-banned 1 $2 IP $2 - Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    /halt
+                  }
+                  if ( $readini C:\Server\mIRC\history.txt ID: $2 == $null ) {
+                    /writeini -n C:\Server\mIRC\history.txt ID: $2 1
+                    /writeini -n C:\Server\mIRC\numberhistorylock1.txt ID: $2 1).
+                    /writeini -n C:\Server\mIRC\numberhistoryall1.txt ID: $2 1).
+                    /msg $me !add-banned 1 $2 IP $2 - Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    /halt
+                  }
+                  elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 1 ) {
+                    /writeini -n C:\Server\mIRC\history.txt ID: $2 2
+                    /writeini -n C:\Server\mIRC\numberhistorylock2.txt ID: $2 2).
+                    /writeini -n C:\Server\mIRC\numberhistoryall3.txt ID: $2 3).
+                    /msg $me !add-banned 2 $2 IP $2 - Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    /halt
+                  }
+                  elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 2 ) {
+                    /writeini -n C:\Server\mIRC\history.txt ID: $2 3
+                    /writeini -n C:\Server\mIRC\numberhistorylock3.txt ID: $2 3).
+                    /writeini -n C:\Server\mIRC\numberhistoryall5.txt ID: $2 5).
+                    /msg $me !add-banned 3 $2 IP $2 - Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    /halt
+                  }
+                  elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 3 ) {
+                    /writeini -n C:\Server\mIRC\history.txt ID: $2 4
+                    /writeini -n C:\Server\mIRC\numberhistorylock4.txt ID: $2 4).
+                    /writeini -n C:\Server\mIRC\numberhistoryall7.txt ID: $2 7).
+                    /msg $me !add-banned 4 $2 IP $2 - Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    /halt
+                  }
+                  elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 4 ) {
+                    /writeini -n C:\Server\mIRC\history.txt ID: $2 5
+                    /writeini -n C:\Server\mIRC\numberhistorylock5.txt ID: $2 5).
+                    /writeini -n C:\Server\mIRC\numberhistoryall9.txt ID: $2 9).
+                    /msg $me !add-banned 5 $2 IP $2 - Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    /halt
+                  }
+                  elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 5 ) {
+                    /writeini -n C:\Server\mIRC\history.txt ID: $2 6
+                    /writeini -n C:\Server\mIRC\numberhistorylock6.txt ID: $2 6).
+                    /writeini -n C:\Server\mIRC\numberhistoryall11.txt ID: $2 11).
+                    /msg $me !add-banned 6 $2 IP $2 - Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    /halt
+                  }
+                  elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 6 ) {
+                    /writeini -n C:\Server\mIRC\history.txt ID: $2 7
+                    /writeini -n C:\Server\mIRC\numberhistorylock7.txt ID: $2 7).
+                    /writeini -n C:\Server\mIRC\numberhistoryall13.txt ID: $2 13).
+                    /msg $me !add-banned 7 $2 IP $2 - Status: Banned %ming Lama: $3 Hari %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $4- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                    /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: BlackList %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: Bad History (7/7) (Oleh Robot: $me $+ )
+                    /writeini -n C:\Server\mIRC\historylist8.txt ID: $2 . Auto BlackList by Robot: $me $+ 
+                    /writeini -n C:\Server\mIRC\numberhistoryall14.txt ID: $2 14).
+                    /writeini -n C:\Server\mIRC\numberhistorylock8.txt ID: $2 .
+                    /raw Ann IP $2 telah diBlackList %ming Lama: Permanent %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: Bad History (7/7) (Oleh Robot: $me $+ )
+                  /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: IP Address Berstatus PERMANENTLY Banned tidak akan di Unban! }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+on 8:TEXT:!ip-plock*:?: { 
+  if ( $2 == $null ) { 
+    /notice $nick Type: !ip-plock <ip> <alasan> 
+    /halt
+  }
+  else {
+    if ( $3 == $null ) { 
+      /notice $nick Type: !ip-plock <ip> <alasan> 
+      /halt
+    }
+    else {
+      if ( $readini C:\Server\mIRC\history.txt ID: $2 == 7 ) {
+        /notice $nick Jumlah Banned IP Address $2 Telah mencapai Jumlah Maximum
+        /halt
+      }
+      else {
+        if ( $readini C:\Server\mIRC\lockunlock.txt ID: $2 == IPban ) {
+          /notice $nick Maaf, IP Address $2 sudah berstatus Banned, Unlock lah terlebih dahulu.
+          /halt
+        }
+        else {
+          if ( $readini C:\Server\mIRC\blacklist.txt ID: $2 == IPPERMANENT ) {
+            /notice $nick Maaf, IP Address yang dimaksud sudah berstatus PERMANENTLY Banned !
+            /halt
+          }
+          elseif ( $readini C:\Server\mIRC\history.txt ID: $2 != 7 ) {
+            /raw ipban add $2
+            /writeini -n C:\Server\mIRC\lastcommand.txt ID: $nick $1-
+            /msg #Admin Date: $day $+ , $date(dd/mm/yyyy) - Time: $time((HH:nn)) %ming $readini C:\Server\mIRC\StaffJoin.txt ID: $nick $nick has been Using command: $1-
+            /notice $nick $2 telah di banned PERMANENT %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+            %n = $calc( $3 * 10 )
+            if ( %n >= 2000000 ) {
+              %s = $calc( %n / 2 )
+              /timer 1 %s /timer 1 %s /msg $me Permanent Banned tidak akan di Unban
+              /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID:  $nick $nick $+ )
+              /writeini -n C:\Server\mIRC\blacklist.txt ID: $2 IPPERMANENT
+              /writeini -n C:\Server\mIRC\lockunlock.txt ID: $2 ipban
+              /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: IP Address Berstatus PERMANENTLY Banned tidak akan di Unban!
+              if ( $readini C:\Server\mIRC\history.txt ID: $2 == $null ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 1
+                /writeini -n C:\Server\mIRC\numberhistorylock1.txt ID: $2 1).
+                /writeini -n C:\Server\mIRC\numberhistoryall1.txt ID: $2 1).
+                /msg $me !add-banned 1 $2 IP $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              if ( $readini C:\Server\mIRC\history.txt ID: $2 == $null ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 1
+                /writeini -n C:\Server\mIRC\numberhistorylock1.txt ID: $2 1).
+                /writeini -n C:\Server\mIRC\numberhistoryall1.txt ID: $2 1).
+                /msg $me !add-banned 1 $2 IP $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 1 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 2
+                /writeini -n C:\Server\mIRC\numberhistorylock2.txt ID: $2 2).
+                /writeini -n C:\Server\mIRC\numberhistoryall3.txt ID: $2 3).
+                /msg $me !add-banned 2 $2 IP $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 2 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 3
+                /writeini -n C:\Server\mIRC\numberhistorylock3.txt ID: $2 3).
+                /writeini -n C:\Server\mIRC\numberhistoryall5.txt ID: $2 5).
+                /msg $me !add-banned 3 $2 IP $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 3 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 4
+                /writeini -n C:\Server\mIRC\numberhistorylock4.txt ID: $2 4).
+                /writeini -n C:\Server\mIRC\numberhistoryall7.txt ID: $2 7).
+                /msg $me !add-banned 4 $2 IP $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 4 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 5
+                /writeini -n C:\Server\mIRC\numberhistorylock5.txt ID: $2 5).
+                /writeini -n C:\Server\mIRC\numberhistoryall9.txt ID: $2 9).
+                /msg $me !add-banned 5 $2 IP $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 5 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 6
+                /writeini -n C:\Server\mIRC\numberhistorylock6.txt ID: $2 6).
+                /writeini -n C:\Server\mIRC\numberhistoryall11.txt ID: $2 11).
+                /msg $me !add-banned 6 $2 IP $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 6 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 7
+                /writeini -n C:\Server\mIRC\numberhistorylock7.txt ID: $2 7).
+                /writeini -n C:\Server\mIRC\numberhistoryall13.txt ID: $2 13).
+                /msg $me !add-banned 7 $2 IP $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /writeini -n C:\Server\mIRC\historylist8.txt ID: $2 . Auto BlackList by Robot: $me $+ 
+                /writeini -n C:\Server\mIRC\numberhistoryall14.txt ID: $2 14).
+                /writeini -n C:\Server\mIRC\numberhistorylock8.txt ID: $2 .
+                /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: BlackList %ming Lama: PERMANENT %ming Keterangan: Bad History (7/7) %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) (Oleh Robot: $me $+ )
+                /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: IP Address Berstatus PERMANENTLY Banned tidak akan di Unban!
+                /halt
+              }
+            }
+            elseif ( %n < 2000000 ) {
+              /timer 1 %n /msg $me Permanent Banned tidak akan di Unban
+              /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID:  $nick $nick $+ )
+              /writeini -n C:\Server\mIRC\blacklist.txt ID: $2 IPPERMANENT
+              /writeini -n C:\Server\mIRC\lockunlock.txt ID: $2 IPBAN
+              /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: ID Berstatus PERMANENTLY Banned tidak akan di Unban!
+              if ( $readini C:\Server\mIRC\history.txt ID: $2 == $null ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 1
+                /writeini -n C:\Server\mIRC\numberhistorylock1.txt ID: $2 1).
+                /writeini -n C:\Server\mIRC\numberhistoryall1.txt ID: $2 1).
+                /msg $me !add-banned 1 $2 IP $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              if ( $readini C:\Server\mIRC\history.txt ID: $2 == $null ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 1
+                /writeini -n C:\Server\mIRC\numberhistorylock1.txt ID: $2 1).
+                /writeini -n C:\Server\mIRC\numberhistoryall1.txt ID: $2 1).
+                /msg $me !add-banned 1 $2 IP $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 1 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 2
+                /writeini -n C:\Server\mIRC\numberhistorylock2.txt ID: $2 2).
+                /writeini -n C:\Server\mIRC\numberhistoryall3.txt ID: $2 3).
+                /msg $me !add-banned 2 $2 IP $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 2 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 3
+                /writeini -n C:\Server\mIRC\numberhistorylock3.txt ID: $2 3).
+                /writeini -n C:\Server\mIRC\numberhistoryall5.txt ID: $2 5).
+                /msg $me !add-banned 3 $2 IP $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 3 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 4
+                /writeini -n C:\Server\mIRC\numberhistorylock4.txt ID: $2 4).
+                /writeini -n C:\Server\mIRC\numberhistoryall7.txt ID: $2 7).
+                /msg $me !add-banned 4 $2 IP $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 4 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 5
+                /writeini -n C:\Server\mIRC\numberhistorylock5.txt ID: $2 5).
+                /writeini -n C:\Server\mIRC\numberhistoryall9.txt ID: $2 9).
+                /msg $me !add-banned 5 $2 IP $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 5 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 6
+                /writeini -n C:\Server\mIRC\numberhistorylock6.txt ID: $2 6).
+                /writeini -n C:\Server\mIRC\numberhistoryall11.txt ID: $2 11).
+                /msg $me !add-banned 6 $2 IP $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /halt
+              }
+              elseif ( $readini C:\Server\mIRC\history.txt ID: $2 == 6 ) {
+                /writeini -n C:\Server\mIRC\history.txt ID: $2 7
+                /writeini -n C:\Server\mIRC\numberhistorylock7.txt ID: $2 7).
+                /writeini -n C:\Server\mIRC\numberhistoryall13.txt ID: $2 13).
+                /msg $me !add-banned 7 $2 IP $2 - Status: Banned %ming Lama: PERMANENT %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick  $+ )
+                /writeini -n C:\Server\mIRC\historylist8.txt ID: $2 . Auto BlackList by Robot: $me $+ 
+                /writeini -n C:\Server\mIRC\numberhistoryall14.txt ID: $2 14).
+                /writeini -n C:\Server\mIRC\numberhistorylock8.txt ID: $2 .
+                /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: BlackList %ming Lama: PERMANENT %ming Keterangan: Bad History (7/7) %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) (Oleh Robot: $me $+ )
+              /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: IP Address Berstatus PERMANENTLY Banned tidak akan di Unban! }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+################################
+# Command Unbanned User #
+################################
+on 4:TEXT:!unlock*:?: { 
+  if ( $2 == $null ) { 
+    /notice $nick Type: !unlock <nickname> <alasan>
+    /halt
+  }
+  else {
+    if ( $3 == $null ) { 
+      /notice $nick Type: !unlock <nickname> <alasan>
+      /halt
+    }
+    else {
+      if ( $readini C:\Server\mIRC\history.txt ID: $2 == 7 ) {
+        /notice $nick Jumlah Unbanned ID $2 Telah mencapai Jumlah Maximum
+        /halt
+      }
+      else {
+        if ( $readini C:\Server\mIRC\lockunlock.txt ID: $2 == unBan ) {
+          /notice $nick ID: Maaf, $2 telah berstatus UnBanned !
+          /notice $nick ID: $2 - $readini C:\Server\mIRC\status.txt ID: $2 
+          /notice $nick $readini C:\Server\mIRC\info.txt ID: $2 %ming History Banned: ( $+ $readini C:\Server\mIRC\History.txt ID: $2 $+ / $+ 7) Case(s).
+          /halt
+        }
+        else {
+          if ( $readini C:\Server\mIRC\blacklist.txt ID: $2 == IPPERMANENT ) {
+            /notice $nick Maaf, Nick yang dimaksud telah berstatus PERMANENTLY Banned! - Silahkan Hubungi %adm
+            /halt
+          }
+          else {
+            if ( $readini C:\Server\mIRC\lockunlock.txt ID: $2 == $null ) {
+              /notice $nick ID: Maaf, $2 tidak berstatus Banned !
+
+              /halt
+            }
+            elseif ( $readini C:\Server\mIRC\history.txt ID: $2 != 7 ) {
+              /msg Database !unlock $2 $nick $3-
+              /raw unlockacct $2
+              /writeini -n C:\Server\mIRC\lastcommand.txt ID: $nick $1-
+              /msg #Admin Date: $day $+ , $date(dd/mm/yyyy) - Time: $time((HH:nn)) %ming $readini C:\Server\mIRC\StaffJoin.txt ID: $nick $nick has been Using command: $1-
+              /writeini -n C:\Server\mIRC\lockunlock.txt ID: $2 Unban
+              /notice $nick ID $2 telah di Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+              %n = $calc( 1 * 1 )
+              if ( %n >= 2000000 ) {
+                %s = $calc( %n / 2 )
+                /timer 1 %s /timer 1 %s /msg $me Status Unbanned untuk ID $2
+                /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: Masa Banned telah habis atau sudah Konfirmasi
+                /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                if ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == $null ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 1
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock1.txt ID: $2 1).
+                  /writeini -n C:\Server\mIRC\numberhistoryall2.txt ID: $2 2).
+                  /msg $me !add-unbanned 1 $2 ID $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                if ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == $null ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 1
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock1.txt ID: $2 1).
+                  /writeini -n C:\Server\mIRC\numberhistoryall2.txt ID: $2 2).
+                  /msg $me !add-unbanned 1 $2 ID $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 1 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 2
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock2.txt ID: $2 2).
+                  /writeini -n C:\Server\mIRC\numberhistoryall4.txt ID: $2 4).
+                  /msg $me !add-unbanned 2 $2 ID $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 2 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 3
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock3.txt ID: $2 3).
+                  /writeini -n C:\Server\mIRC\numberhistoryall6.txt ID: $2 6).
+                  /msg $me !add-unbanned 3 $2 ID $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 3 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 4
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock4.txt ID: $2 4).
+                  /writeini -n C:\Server\mIRC\numberhistoryall8.txt ID: $2 .
+                  /msg $me !add-unbanned 4 $2 ID $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 4 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 5
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock5.txt ID: $2 5).
+                  /writeini -n C:\Server\mIRC\numberhistoryall10.txt ID: $2 10).
+                  /msg $me !add-unbanned 5 $2 ID $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 5 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 6
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock6.txt ID: $2 6).
+                  /writeini -n C:\Server\mIRC\numberhistoryall12.txt ID: $2 12).
+                  /msg $me !add-unbanned 6 $2 ID $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 6 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 7
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock7.txt ID: $2 7).
+                  /writeini -n C:\Server\mIRC\numberhistoryall15.txt ID: $2 15).
+                  /msg $me !add-unbanned 7 $2 ID $2 - Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: BlackList %ming Lama: PERMANENT %ming Keterangan: Bad History (7/7) Case(s) %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) (Oleh Robot: $me  $+ )
+                  /writeini -n C:\Server\mIRC\historyUBlist8.txt ID: $2 . Auto BlackList by Robot: $me $+ 
+                  /writeini -n C:\Server\mIRC\numberhistoryall16.txt ID: $2 16).
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock8.txt ID: $2 .
+                  /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: ID Berstatus PERMANENTLY Banned tidak akan diunban!
+                  /halt
+                }
+              }
+              elseif ( %n < 2000000 ) {
+                /timer 1 %n /msg $me Unbanned Status ID: $2
+                /writeini -n C:\Server\mIRC\lastcommand.txt ID: $nick $1-
+                /writeini -n C:\Server\mIRC\lockunlock.txt ID: $2 Unban
+                /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: Masa Banned telah habis atau sudah Konfirmasi
+                /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                if ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == $null ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 1
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock1.txt ID: $2 1).
+                  /writeini -n C:\Server\mIRC\numberhistoryall2.txt ID: $2 2).
+                  /msg $me !add-unbanned 1 $2 ID $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                if ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == $null ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 1
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock1.txt ID: $2 1).
+                  /writeini -n C:\Server\mIRC\numberhistoryall2.txt ID: $2 2).
+                  /msg $me !add-unbanned 1 $2 ID $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 1 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 2
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock2.txt ID: $2 2).
+                  /writeini -n C:\Server\mIRC\numberhistoryall4.txt ID: $2 4).
+                  /msg $me !add-unbanned 2 $2 ID $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 2 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 3
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock3.txt ID: $2 3).
+                  /writeini -n C:\Server\mIRC\numberhistoryall6.txt ID: $2 6).
+                  /msg $me !add-unbanned 3 $2 ID $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 3 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 4
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock4.txt ID: $2 4).
+                  /writeini -n C:\Server\mIRC\numberhistoryall8.txt ID: $2 .
+                  /msg $me !add-unbanned 4 $2 ID $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 4 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 5
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock5.txt ID: $2 5).
+                  /writeini -n C:\Server\mIRC\numberhistoryall10.txt ID: $2 10).
+                  /msg $me !add-unbanned 5 $2 ID $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 5 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 6
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock6.txt ID: $2 6).
+                  /writeini -n C:\Server\mIRC\numberhistoryall12.txt ID: $2 12).
+                  /msg $me !add-unbanned 6 $2 ID $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 6 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 7
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock7.txt ID: $2 7).
+                  /writeini -n C:\Server\mIRC\numberhistoryall15.txt ID: $2 15).
+                  /msg $me !add-unbanned 7 $2 ID $2 - Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: BlackList %ming Lama: PERMANENT %ming Keterangan: Bad History (7/7) Case(s) %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) (Oleh Robot: $me  $+ )
+                  /writeini -n C:\Server\mIRC\historyUBlist8.txt ID: $2 . Auto BlackList by Robot: $me $+ 
+                  /writeini -n C:\Server\mIRC\numberhistoryall16.txt ID: $2 16).
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock8.txt ID: $2 .
+                /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: ID Berstatus PERMANENTLY Banned tidak akan diunban! }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+################################
+# Command Unbanned IP #
+################################
+on 8:TEXT:!ip-unlock*:?: { 
+  if ( $2 == $null ) { 
+    /notice $nick Type: !ip-unlock <ip> <alasan>
+    /halt
+  }
+  else {
+    if ( $3 == $null ) { 
+      /notice $nick Type: !ip-unlock <ip> <alasan>
+      /halt
+    }
+    else {
+      if ( $readini C:\Server\mIRC\history.txt ID: $2 == 7 ) {
+        /notice $nick Jumlah Unbanned IP Address $2 Telah mencapai Jumlah Maximum
+        /halt
+      }
+      else {
+        if ( $readini C:\Server\mIRC\lockunlock.txt ID: $2 == ipunBan ) {
+          /notice $nick Maaf, IP Address $2 telah berstatus UnBanned !
+          /notice $nick IP: $2 - $readini C:\Server\mIRC\status.txt ID: $2 
+          /notice $nick $readini C:\Server\mIRC\info.txt ID: $2 %ming History Banned: ( $+ $readini C:\Server\mIRC\History.txt ID: $2 $+ / $+ 7) Case(s).
+          /halt
+        }
+        else {
+          if ( $readini C:\Server\mIRC\blacklist.txt ID: $2 == IPPERMANENT ) {
+            /notice $nick Maaf, IP Address yang dimaksud telah berstatus PERMANENTLY Banned! - Silahkan Hubungi Admin $readini C:\Server\mIRC\online-Admin.txt ID: Online-Admin
+            /halt
+          }
+          else {
+            if ( $readini C:\Server\mIRC\lockunlock.txt ID: $2 == $null ) {
+              /notice $nick ID: Maaf, IP Address $2 tidak berstatus Banned !
+              /halt
+            }
+            elseif ( $readini C:\Server\mIRC\history.txt ID: $2 != 7 ) {
+              /raw ipban del $2
+              /writeini -n C:\Server\mIRC\lastcommand.txt ID: $nick $1-
+              /msg #Admin Date: $day $+ , $date(dd/mm/yyyy) - Time: $time((HH:nn)) %ming $readini C:\Server\mIRC\StaffJoin.txt ID: $nick $nick has been Using command: $1-
+              /writeini -n C:\Server\mIRC\lockunlock.txt ID: $2 IPUNBAN
+              /notice $nick IP $2 telah di Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+              %n = $calc( 1 * 1 )
+              if ( %n >= 2000000 ) {
+                %s = $calc( %n / 2 )
+                /timer 1 %s /timer 1 %s /msg $me Status Unbanned untuk ID $2
+                /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: Masa Banned telah habis atau sudah Konfirmasi kpd Administrator
+                /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                if ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == $null ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 1
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock1.txt ID: $2 1).
+                  /writeini -n C:\Server\mIRC\numberhistoryall2.txt ID: $2 2).
+                  /msg $me !add-unbanned 1 $2 IP $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                if ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == $null ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 1
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock1.txt ID: $2 1).
+                  /writeini -n C:\Server\mIRC\numberhistoryall2.txt ID: $2 2).
+                  /msg $me !add-unbanned 1 $2 IP $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 1 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 2
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock2.txt ID: $2 2).
+                  /writeini -n C:\Server\mIRC\numberhistoryall4.txt ID: $2 4).
+                  /msg $me !add-unbanned 2 $2 IP $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 2 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 3
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock3.txt ID: $2 3).
+                  /writeini -n C:\Server\mIRC\numberhistoryall6.txt ID: $2 6).
+                  /msg $me !add-unbanned 3 $2 IP $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 3 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 4
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock4.txt ID: $2 4).
+                  /writeini -n C:\Server\mIRC\numberhistoryall8.txt ID: $2 .
+                  /msg $me !add-unbanned 4 $2 IP $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 4 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 5
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock5.txt ID: $2 5).
+                  /writeini -n C:\Server\mIRC\numberhistoryall10.txt ID: $2 10).
+                  /msg $me !add-unbanned 5 $2 IP $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 5 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 6
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock6.txt ID: $2 6).
+                  /writeini -n C:\Server\mIRC\numberhistoryall12.txt ID: $2 12).
+                  /msg $me !add-unbanned 6 $2 IP $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 6 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 7
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock7.txt ID: $2 7).
+                  /writeini -n C:\Server\mIRC\numberhistoryall15.txt ID: $2 15).
+                  /msg $me !add-unbanned 7 $2 IP $2 - Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: BlackList %ming Lama: PERMANENT %ming Keterangan: Bad History (7/7) Case(s) %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) (Oleh Robot: $me  $+ )
+                  /writeini -n C:\Server\mIRC\historyUBlist8.txt ID: $2 . Auto BlackList by Robot: $me $+ 
+                  /writeini -n C:\Server\mIRC\numberhistoryall16.txt ID: $2 16).
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock8.txt ID: $2 .
+                  /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: IP Address Berstatus PERMANENTLY Banned tidak akan diunban!
+                  /halt
+                }
+              }
+              elseif ( %n < 2000000 ) {
+                /timer 1 %n /msg $me Unbanned Status ID: $2
+                /writeini -n C:\Server\mIRC\lastcommand.txt ID: $nick $1-
+                /writeini -n C:\Server\mIRC\lockunlock.txt ID: $2 ipUnban
+                /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: Masa Banned telah habis atau sudah Konfirmasi kepada AdministratoR
+                /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                if ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == $null ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 1
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock1.txt ID: $2 1).
+                  /writeini -n C:\Server\mIRC\numberhistoryall2.txt ID: $2 2).
+                  /msg $me !add-unbanned 1 $2 IP $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                if ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == $null ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 1
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock1.txt ID: $2 1).
+                  /writeini -n C:\Server\mIRC\numberhistoryall2.txt ID: $2 2).
+                  /msg $me !add-unbanned 1 $2 IP $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 1 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 2
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock2.txt ID: $2 2).
+                  /writeini -n C:\Server\mIRC\numberhistoryall4.txt ID: $2 4).
+                  /msg $me !add-unbanned 2 $2 IP $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 2 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 3
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock3.txt ID: $2 3).
+                  /writeini -n C:\Server\mIRC\numberhistoryall6.txt ID: $2 6).
+                  /msg $me !add-unbanned 3 $2 IP $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 3 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 4
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock4.txt ID: $2 4).
+                  /writeini -n C:\Server\mIRC\numberhistoryall8.txt ID: $2 .
+                  /msg $me !add-unbanned 4 $2 IP $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 4 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 5
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock5.txt ID: $2 5).
+                  /writeini -n C:\Server\mIRC\numberhistoryall10.txt ID: $2 10).
+                  /msg $me !add-unbanned 5 $2 IP $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 5 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 6
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock6.txt ID: $2 6).
+                  /writeini -n C:\Server\mIRC\numberhistoryall12.txt ID: $2 12).
+                  /msg $me !add-unbanned 6 $2 IP $2 - Status: Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /halt
+                }
+                elseif ( $readini C:\Server\mIRC\historyUB.txt ID: $2 == 6 ) {
+                  /writeini -n C:\Server\mIRC\historyUB.txt ID: $2 7
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock7.txt ID: $2 7).
+                  /writeini -n C:\Server\mIRC\numberhistoryall15.txt ID: $2 15).
+                  /msg $me !add-unbanned 7 $2 IP $2 - Unbanned %ming Tanggal Unbanned: $date(dd/mm/yyyy) $time((HH:nn)) %ming Keterangan: $3- $readini C:\Server\mIRC\option2.txt ID: $nick $nick $+ )
+                  /writeini -n C:\Server\mIRC\status.txt ID: $2 Status: BlackList %ming Lama: PERMANENT %ming Keterangan: Bad History (7/7) Case(s) %ming Tanggal Banned: $date(dd/mm/yyyy) $time((HH:nn)) (Oleh Robot: $me  $+ )
+                  /writeini -n C:\Server\mIRC\historyUBlist8.txt ID: $2 . Auto BlackList by Robot: $me $+ 
+                  /writeini -n C:\Server\mIRC\numberhistoryall16.txt ID: $2 16).
+                  /writeini -n C:\Server\mIRC\numberhistoryunlock8.txt ID: $2 .
+                /writeini -n C:\Server\mIRC\info.txt ID: $2 Info: IP Address Berstatus PERMANENTLY Banned tidak akan diunban! }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+################################
+# PROMOTE AND DEMOTE USER LIST #
+################################
+on 1:Text:*!promote*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 2:Text:*!promote*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 3:Text:*!promote*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 4:Text:*!promote*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 5:Text:*!promote*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 6:Text:*!promote*:?: { /msg $nick Maaf, Anda Tidak Bisa Mengakses Command Ini! }
+on 7:Text:*!promote*:?: {
+  ($2 == $null) {
+    /msg $nick Command Promote:
+    /msg $nick %server_crozz
+    /msg $nick Untuk promote user ke VOP, type !promote-vop <nickname>
+    /msg $nick %server_crozz
+  }
+}
+on 7:Text:*!promote-vop*:?: {
+  ($2 == $null) {
+    /msg $nick Type: !promote-vop <nickname>
+  }
+  Else {
+    /msg $nick Nickname: $2 Promoted To Rank VOP %server_name
+    /raw vop $2
+    /msg %server_bot1 !add $2 2
+    /msg %server_bot2 !addadmin $2
+    /msg $me !whois-add VOP $2
+    /msg $me !cmd-add $2 2 VOP
+    /notify $2
+  }
+}
+on 7:Text:*!demote*:?: {
+  If ($2 $readini C:\Server\mIRC\Staff.txt ID : $2 == $null ) {
+    /msg $nick Maaf, ID : $2 Tidak Terdaftar Sebagai Crew %server_name
+    /halt
+  }
+  If ($2 $readini C:\Server\mIRC\Staff.txt ID : $2 == demoted ) {
+    /msg $nick Maaf, ID : $2 Sudah Di Demote Dari List Crew %server_name
+    /halt
+  }
+  If ($2 $readini C:\Server\mIRC\Staff.txt ID : $2 == HA ) {
+    /msg $nick Maaf, Anda Tidak Punya Akses Untuk Menggunakan Command Ini!
+    /halt
+  }
+  If ($2 $readini C:\Server\mIRC\Staff.txt ID : $2 == Admin ) {
+    /msg $nick Maaf, Anda Tidak Punya Akses Untuk Menggunakan Command Ini!
+    /halt
+  }
+  If ($2 $readini C:\Server\mIRC\Staff.txt ID : $2 == AOP ) {
+    /msg $nick Maaf, Anda Tidak Punya Akses Untuk Menggunakan Command Ini!
+    /halt
+  }
+  If ($2 $readini C:\Server\mIRC\Staff.txt ID : $2 == OPS ) {
+    /msg $nick Maaf, Anda Tidak Punya Akses Untuk Menggunakan Command Ini!
+    /halt
+  }
+  If ($2 $readini C:\Server\mIRC\Staff.txt ID : $2 == OPC ) {
+    /msg $nick Maaf, Anda Tidak Punya Akses Untuk Menggunakan Command Ini!
+    /halt
+  }
+  If ($2 $readini C:\Server\mIRC\Staff.txt ID : $2 == TE ) {
+    /msg $nick Maaf, Anda Tidak Punya Akses Untuk Menggunakan Command Ini!
+    /halt
+  }
+  If ($2 $readini C:\Server\mIRC\Staff.txt ID : $2 == CAT ) {
+    /msg $nick Maaf, Anda Tidak Punya Akses Untuk Menggunakan Command Ini!
+    /halt
+  }
+  If ($2 == $null) {
+    /msg $nick Silahkan Berikan ID Yang Akan Di Demote Dari Crew List %server_name
+  }
+  Else {
+    /msg $nick ID : $2 Telah Di Demote Dari List Crew %server_name
+    /raw ann ID : $2 - Telah Di Demote Dari List Crew %server_name
+    /raw deop $2
+    /raw devoice $2
+    /msg %server_bot1 !del $2 1
+    /msg %server_bot2 !deladmin $2
+    /msg $me !whois-del VOP $2
+    /msg $me !cmd-add $2 1
+  }
+}
+on 8:Text:*!promote*:?: {
+  ($2 == $null) {
+    /msg $nick Command Promote:
+    /msg $nick %server_crozz
+    /msg $nick Untuk promote user ke VOP, type !promote-vop <nickname>
+    /msg $nick Untuk promote user ke GAT, type !promote-gat <nickname>
+    /msg $nick Untuk promote user ke TE, type !promote-te <nickname>
+    /msg $nick Untuk promote user ke OPC, type !promote-opc <nickname>
+    /msg $nick %server_crozz
+  }
+}
+on 7:Text:*!promote-gat*:?: {
+  ($2 == $null) {
+    /msg $nick Type: !promote-gat <nickname>
+  }
+  Else {
+    /msg $nick Nickname: $2 Promoted To Rank GAT %server_name
+    /raw vop $2
+    /msg %server_bot1 !add $2 2
+    /msg %server_bot2 !addadmin $2
+    /msg $me !whois-add CAT $2
+    /msg $me !cmd-add $2 2 CAT
+    /notify $2
+  }
+}
+on 7:Text:*!promote-gat*:?: {
+  ($2 == $null) {
+    /msg $nick Type: !promote-gat <nickname>
+  }
+  Else {
+    /msg $nick Nickname: $2 Promoted To Rank GAT %server_name
+    /raw vop $2
+    /msg %server_bot1 !add $2 2
+    /msg %server_bot2 !addadmin $2
+    /msg $me !whois-add CAT $2
+    /msg $me !cmd-add $2 2 CAT
+    /notify $2
+  }
+}
+on 7:Text:*!promote-te*:?: {
+  ($2 == $null) {
+    /msg $nick Type: !promote-te <nickname>
+  }
+  Else {
+    /msg $nick Nickname: $2 Promoted To Rank TE %server_name
+    /raw vop $2
+    /msg %server_bot1 !add $2 2
+    /msg %server_bot2 !addadmin $2
+    /msg $me !whois-add TE $2
+    /msg $me !cmd-add $2 2 TE
+    /notify $2
+  }
+}
+######################
+# REMOTE USER SERVER #
+######################
+
+#############
+# CMD - BOT #
+#############
+on 10:Text:*!cmd-freeze*:?: {
+  ($2 == $null) {
+    /msg $nick Maaf, Command Anda Salah!
+    /msg $nick Type /w $me !cmd-freeze (Username)
+    /msg $nick Contoh : !cmd-freeze %server_owner
+  }
+  Else {
+    /msg $nick ID : $2 Telah Di Freeze Command!
+    /msg $me !cmd-add $2 Freeze
+  }
+}
+on 10:Text:*!cmd-lvl*:?: {
+  ($2 == $null) {
+    /msg $nick Level Command :
+    /msg $nick Level 1 = User
+    /msg $nick Level 2 = VOP
+    /msg $nick Level 3 = CAT
+    /msg $nick Level 4 = TE
+    /msg $nick Level 5 = OPC
+    /msg $nick Level 6 = OPS
+    /msg $nick Level 7 = AOP
+    /msg $nick Level 8 = Admin
+    /msg $nick Level 9 = HA
+    /msg $nick Level ? = ??
+    /msg $nick Group Available :
+    /msg $nick HA, Admin, AOP, OPS, OPC, TE, CAT, VOP.
+  }
+}
+on 10:Text:*!cmd-add*:?: {
+  alias hire {
+    If ($2 == $null) {
+      /msg $nick Maaf, Command Belum Lengkap!
+      /msg $nick Type /w $me !cmd-add (Username) (Level) (Group)
+      /msg $nick Contoh : !cmd-add %server_dev 9 HA
+    }
+    Else {
+      /auser $3 $2
+      If ($3 == 1 ) {
+        /writeini -n C:\Server\mIRC\Option.txt ID : $2 Devoice/deop/
+        /writeini -n C:\Server\mIRC\Staff.txt ID : $2 Demoted
+        /writeini -n C:\Server\mIRC\lastcommand.txt ID : $nick $1-
+        /msg $nick ID : $2 Telah Di Hapus Dari List Crew!
+      }
+      If ($3 == 2 ) {
+        /writeini -n C:\Server\mIRC\Option.txt ID : $2 $4- $+ :
+        /writeini -n C:\Server\mIRC\Staff.txt ID : $2 $4
+        /writeini -n C:\Server\mIRC\Option2.txt ID : $2 ( $+ $4- $+ :
+        /writeini -n C:\Server\mIRC\lastcommand.txt ID : $nick $1-
+        /msg $nick ID : $2 Telah Di Masukan Ke List VOP Dengan Group : $4-
+      }
+      If ($3 == 3 ) {
+        /writeini -n C:\Server\mIRC\Option.txt ID : $2 $4- $+ :
+        /writeini -n C:\Server\mIRC\Staff.txt ID : $2 $4
+        /writeini -n C:\Server\mIRC\Option2.txt ID : $2 ( $+ $4- $+ :
+        /writeini -n C:\Server\mIRC\lastcommand.txt ID : $nick $1-
+        /msg $nick ID : $2 Telah Di Masukan Ke List CAT Dengan Group : $4-
+      }
+      If ($3 == 4 ) {
+        /writeini -n C:\Server\mIRC\Option.txt ID : $2 $4- $+ :
+        /writeini -n C:\Server\mIRC\Staff.txt ID : $2 $4
+        /writeini -n C:\Server\mIRC\Option2.txt ID : $2 ( $+ $4- $+ :
+        /writeini -n C:\Server\mIRC\lastcommand.txt ID : $nick $1-
+        /msg $nick ID : $2 Telah Di Masukan Ke List TE Dengan Group : $4-
+      }
+      If ($3 == 5 ) {
+        /writeini -n C:\Server\mIRC\Option.txt ID : $2 $4- $+ :
+        /writeini -n C:\Server\mIRC\Staff.txt ID : $2 $4
+        /writeini -n C:\Server\mIRC\Option2.txt ID : $2 ( $+ $4- $+ :
+        /writeini -n C:\Server\mIRC\lastcommand.txt ID : $nick $1-
+        /msg $nick ID : $2 Telah Di Masukan Ke List OPC Dengan Group : $4-
+      }
+      If ($3 == 6 ) {
+        /writeini -n C:\Server\mIRC\Option.txt ID : $2 $4- $+ :
+        /writeini -n C:\Server\mIRC\Staff.txt ID : $2 $4
+        /writeini -n C:\Server\mIRC\Option2.txt ID : $2 ( $+ $4- $+ :
+        /writeini -n C:\Server\mIRC\lastcommand.txt ID : $nick $1-
+        /msg $nick ID : $2 Telah Di Masukan Ke List OPS Dengan Group : $4-
+      }
+      If ($3 == 7 ) {
+        /writeini -n C:\Server\mIRC\Option.txt ID : $2 $4- $+ :
+        /writeini -n C:\Server\mIRC\Staff.txt ID : $2 $4
+        /writeini -n C:\Server\mIRC\Option2.txt ID : $2 ( $+ $4- $+ :
+        /writeini -n C:\Server\mIRC\lastcommand.txt ID : $nick $1-
+        /msg $nick ID : $2 Telah Di Masukan Ke List AOP Dengan Group : $4-
+      }
+      If ($3 == 8 ) {
+        /writeini -n C:\Server\mIRC\Option.txt ID : $2 $4- $+ :
+        /writeini -n C:\Server\mIRC\Staff.txt ID : $2 $4
+        /writeini -n C:\Server\mIRC\Option2.txt ID : $2 ( $+ $4- $+ :
+        /writeini -n C:\Server\mIRC\lastcommand.txt ID : $nick $1-
+        /msg $nick ID : $2 Telah Di Masukan Ke List Admin Dengan Group : $4-
+      }
+      If ($3 == 9 ) {
+        /writeini -n C:\Server\mIRC\Option.txt ID : $2 $4- $+ :
+        /writeini -n C:\Server\mIRC\Staff.txt ID : $2 $4
+        /writeini -n C:\Server\mIRC\Option2.txt ID : $2 ( $+ $4- $+ :
+        /writeini -n C:\Server\mIRC\lastcommand.txt ID : $nick $1-
+        /writeini -n C:\Server\mIRC\Option.txt ID : Pembatas |
+        /msg $nick ID : $2 Telah Di Masukan Ke List HA Dengan Group : $4-
+      }
+    }
+  }
+}
+on 10:Text:*!cmd-del*:?: {
+  alias hire {
+    If ($2 == $null) {
+      /msg $nick Maaf, Command Belum Lengkap!
+      /msg $nick Type /w $me !cmd-del (Username)
+      /msg $nick Contoh : !cmd-del %server_dev
+      /writeini -n C:\Server\mIRC\lastcommand.txt ID : $nick $1-
+    }
+    Else {
+      /auser $3 $2
+      If ($read(userlist.txt, s, $2) == $null) {
+        write users.ini $3 $2
+        write remote.ini $3 $2
+        writeini sbot.ini status users $calc($users + 1)
+      }
+      If ($3 == $null) {
+        /writeini -n C:\Server\mIRC\Option.txt ID : $2 Devoice/deop/
+        /writeini -n C:\Server\mIRC\Staff.txt ID : $2 DeCrew
+        /writeini -n C:\Server\mIRC\lastcommand.txt ID : $nick $1-
+        /msg $nick ID : $2 Telah Di Hapus Dari List Crew!
+      }
+    }
+  }
+}
+################
+# SYSTEM WHOIS #
+################
+on 10:Text:*!whois-add*:?: {
+  If ($2 == HA) { write C:\Server\mIRC\ListHA.txt $3-
+  /msg $nick Menambahkan $3- Ke List Head Admin. }
+  If ($2 == Admin) { write C:\Server\mIRC\ListAdmin.txt $3-
+  /msg $nick Menambahkan $3- Ke List Administrator. }
+  If ($2 == AOP) { write C:\Server\mIRC\ListAOP.txt $3-
+  /msg $nick Menambahkan $3- Ke List Admin OPerator. }
+  If ($2 == OPS) { write C:\Server\mIRC\ListOPS.txt $3-
+  /msg $nick Menambahkan $3- Ke List OPerator Server. }
+  If ($2 == OPC) { write C:\Server\mIRC\ListOPC.txt $3-
+  /msg $nick Menambahkan $3- Ke List OPerator Channel. }
+  If ($2 == TE) { write C:\Server\mIRC\ListTE.txt $3-
+  /msg $nick Menambahkan $3- Ke List Team Event. }
+  If ($2 == CAT) { write C:\Server\mIRC\ListCAT.txt $3-
+  /msg $nick Menambahkan $3- Ke List CheAT analyzer. }
+  If ($2 == VOP) { write C:\Server\mIRC\ListVOP.txt $3-
+  /msg $nick Menambahkan $3- Ke List Voice OPerator. }
+}
+on 10:Text:*!whois-del*:?: {
+  If ($2 == HA) { write $+(-ds,$3) C:\Server\mIRC\ListHA.txt $3-
+  /msg $nick Menghapus $3- Ke List Head Admin. }
+  If ($2 == Admin) { write $+(-ds,$3) C:\Server\mIRC\ListAdmin.txt $3-
+  /msg $nick Menghapus $3- Ke List Administrator. }
+  If ($2 == AOP) { write $+(-ds,$3) C:\Server\mIRC\ListAOP.txt $3-
+  /msg $nick Menghapus $3- Ke List Admin OPerator. }
+  If ($2 == OPS) { write $+(-ds,$3) C:\Server\mIRC\ListOPS.txt $3-
+  /msg $nick Menghapus $3- Ke List OPerator Server. }
+  If ($2 == OPC) { write $+(-ds,$3) C:\Server\mIRC\ListOPC.txt $3-
+  /msg $nick Menghapus $3- Ke List OPerator Channel. }
+  If ($2 == TE) { write $+(-ds,$3) C:\Server\mIRC\ListTE.txt $3-
+  /msg $nick Menghapus $3- Ke List Team Event. }
+  If ($2 == CAT) { write $+(-ds,$3) C:\Server\mIRC\ListCAT.txt $3-
+  /msg $nick Menghapus $3- Ke List CheAT analyzer. }
+  If ($2 == VOP) { write $+(-ds,$3) C:\Server\mIRC\ListVOP.txt $3-
+  /msg $nick Menghapus $3- Ke List Voice OPerator. }
+}
+on 10:Text:*!whois*:?: {
+  If ($2 == Owner) {
+    var %a = $lines(C:\Server\mIRC\ListOwner.txt)
+    while (%a) {
+      /msg $nick /whois $read(C:\Server\mIRC\ListOwner.txt,%a)
+      /whois $read(C:\Server\mIRC\ListOwner.txt,%a)
+      dec %a
+    }
+  }
+  If ($2 == Dev) {
+    var %a = $lines(C:\Server\mIRC\ListDev.txt)
+    while (%a) {
+      /msg $nick /whois $read(C:\Server\mIRC\ListDev.txt,%a)
+      /whois $read(C:\Server\mIRC\ListDev.txt,%a)
+      dec %a
+    }
+  }
+  If ($2 == HA) {
+    var %a = $lines(C:\Server\mIRC\ListHA.txt)
+    while (%a) {
+      /msg $nick /whois $read(C:\Server\mIRC\ListHA.txt,%a)
+      /whois $read(C:\Server\mIRC\ListHA.txt,%a)
+      dec %a
+    }
+  }
+  If ($2 == Admin) {
+    var %a = $lines(C:\Server\mIRC\ListAdmin.txt)
+    while (%a) {
+      /msg $nick /whois $read(C:\Server\mIRC\ListAdmin.txt,%a)
+      /whois $read(C:\Server\mIRC\ListAdmin.txt,%a)
+      dec %a
+    }
+  }
+  If ($2 == AOP) {
+    var %a = $lines(C:\Server\mIRC\ListAOP.txt)
+    while (%a) {
+      /msg $nick /whois $read(C:\Server\mIRC\ListAOP.txt,%a)
+      /whois $read(C:\Server\mIRC\ListAOP.txt,%a)
+      dec %a
+    }
+  }
+  If ($2 == OPS) {
+    var %a = $lines(C:\Server\mIRC\ListOPS.txt)
+    while (%a) {
+      /msg $nick /whois $read(C:\Server\mIRC\ListOPS.txt,%a)
+      /whois $read(C:\Server\mIRC\ListOPS.txt,%a)
+      dec %a
+    }
+  }
+  If ($2 == OPC) {
+    var %a = $lines(C:\Server\mIRC\ListOPC.txt)
+    while (%a) {
+      /msg $nick /whois $read(C:\Server\mIRC\ListOPC.txt,%a)
+      /whois $read(C:\Server\mIRC\ListOPC.txt,%a)
+      dec %a
+    }
+  }
+  If ($2 == TE) {
+    var %a = $lines(C:\Server\mIRC\ListTE.txt)
+    while (%a) {
+      /msg $nick /whois $read(C:\Server\mIRC\ListTE.txt,%a)
+      /whois $read(C:\Server\mIRC\ListTE.txt,%a)
+      dec %a
+    }
+  }
+  If ($2 == CAT) {
+    var %a = $lines(C:\Server\mIRC\ListCAT.txt)
+    while (%a) {
+      /msg $nick /whois $read(C:\Server\mIRC\ListCAT.txt,%a)
+      /whois $read(C:\Server\mIRC\ListCAT.txt,%a)
+      dec %a
+    }
+  }
+  If ($2 == VOP) {
+    var %a = $lines(C:\Server\mIRC\ListVOP.txt)
+    while (%a) {
+      /msg $nick /whois $read(C:\Server\mIRC\ListVOP.txt,%a)
+      /whois $read(C:\Server\mIRC\ListVOP.txt,%a)
+      dec %a
+    }
+  }
+}
+######################
+# AUTO CONFIGURATION #
+######################
+on 10:Text:*!reload*:?: }
+/timer 0 250 /msg $me !sendmsg
+/timer 0 500 /msg %server_ch1 Join Channel Community Untuk Free Create Room!
+/timer 0 500 /msg %server_ch2 Join Channel Community Untuk Free Create Room!
+/timer 0 500 /msg %server_ch3 Join Channel Community Untuk Free Create Room!
+/timer 0 500 /msg %server_ch4 Join Channel Community Untuk Free Create Room!
+/timer 0 500 /msg %server_ch5 Join Channel Community Untuk Free Create Room!
+/timer 0 500 /msg %server_ch6 Join Channel Community Untuk Free Create Room!
+/timer 0 850 /msg %server_ch1 Official Forum %server_name : %server_forum
+/timer 0 850 /msg %server_ch2 Official Forum %server_name : %server_forum
+/timer 0 850 /msg %server_ch3 Official Forum %server_name : %server_forum
+/timer 0 850 /msg %server_ch4 Official Forum %server_name : %server_forum
+/timer 0 850 /msg %server_ch5 Official Forum %server_name : %server_forum
+/timer 0 850 /msg %server_ch6 Official Forum %server_name : %server_forum
+/timer 0 1000 /raw ann Ayo Sebarkan Server %server_name Dengan IP : %server_ip • Tzone : %server_tzone
+/timer 1 20 /msg $me !ch-admin
+/timer 1 21 /msg $me Berhasil Mengisi Kembali Konfigurasi Auto Message...
+}
+on 10:Text:*!sendmsg*:?: {
+/msg %server_ch1 %server_name • IP : %server_ip • Tzone : %server_tzone
+/msg %server_ch2 %server_name • IP : %server_ip • Tzone : %server_tzone
+/msg %server_ch3 %server_name • IP : %server_ip • Tzone : %server_tzone
+/msg %server_ch4 %server_name • IP : %server_ip • Tzone : %server_tzone
+/msg %server_ch5 %server_name • IP : %server_ip • Tzone : %server_tzone
+/msg %server_ch6 %server_name • IP : %server_ip • Tzone : %server_tzone
+}
