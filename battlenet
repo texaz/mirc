@@ -2399,14 +2399,14 @@ on 10:Text:*!whois*:?: {
 ######################
 # AUTO CONFIGURATION #
 ######################
-on 10:Text:*!reload*:?: }
+on 10:Text:*!reload*:?: {
 /timer 0 250 /msg $me !sendmsg
-/timer 0 500 /msg %server_ch1 Join Channel Community Untuk Free Create Room!
-/timer 0 500 /msg %server_ch2 Join Channel Community Untuk Free Create Room!
-/timer 0 500 /msg %server_ch3 Join Channel Community Untuk Free Create Room!
-/timer 0 500 /msg %server_ch4 Join Channel Community Untuk Free Create Room!
-/timer 0 500 /msg %server_ch5 Join Channel Community Untuk Free Create Room!
-/timer 0 500 /msg %server_ch6 Join Channel Community Untuk Free Create Room!
+/timer 0 500 /msg %server_ch1 
+/timer 0 500 /msg %server_ch2 
+/timer 0 500 /msg %server_ch3 
+/timer 0 500 /msg %server_ch4 
+/timer 0 500 /msg %server_ch5 
+/timer 0 500 /msg %server_ch6 
 /timer 0 850 /msg %server_ch1 Official Forum %server_name : %server_forum
 /timer 0 850 /msg %server_ch2 Official Forum %server_name : %server_forum
 /timer 0 850 /msg %server_ch3 Official Forum %server_name : %server_forum
